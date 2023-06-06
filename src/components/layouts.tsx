@@ -56,17 +56,17 @@ function Layout({ children }: LayoutProps) {
             </svg>
           </div>
         </div>
-        {children}
+        <div className="relative z-20"> {children}</div>
       </main>
       <footer className="absolute bottom-0 flex w-full items-center justify-center gap-2 divide-y">
         <span>©EthGlobal 2023.</span>
         <span>
           Built by{" "}
-          <a href="" className="text-blue-500">
+          <a href="" className="text-blue-600">
             lovelace{" "}
           </a>
           and{" "}
-          <a href="" className="text-blue-500">
+          <a href="" className="text-blue-600">
             kenny
           </a>
         </span>
