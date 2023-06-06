@@ -13,11 +13,10 @@ const Home: NextPage = () => {
       <Layout>
         <div className="mx-auto my-0 max-w-6xl text-center">
           <h1 className="mt-16 text-center font-bespoke text-7xl font-bold capitalize sm:mt-36">
-            Proof of development
+            Proof of <span className="text-blue-600">development</span>
           </h1>
           <p className="mt-4 text-lg">
-            Get collectibles for your contributions to the open source web3
-            ecosystem.
+            Get rewarded for your contributions to the open source ecosystem.
           </p>
         </div>
       </Layout>
