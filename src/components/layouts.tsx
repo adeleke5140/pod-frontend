@@ -6,7 +6,9 @@ function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 via-transparent to-transparent font-supreme">
       <nav className="flex justify-around pt-4">
-        <span className="font-semibold">POD</span>
+        <span className="rounded-b-2xl bg-blue-600 p-4 font-semibold text-white">
+          POD
+        </span>
         <ul className="flex gap-2">
           <li>
             <a href="">About</a>
@@ -56,11 +58,17 @@ function Layout({ children }: LayoutProps) {
         </div>
         {children}
       </main>
-      <footer className="absolute bottom-0 flex w-full items-center justify-center">
-        <span>© 2021 Proof of Development</span>
-        <span>EthGlobal 2023</span>
+      <footer className="absolute bottom-0 flex w-full items-center justify-center gap-2 divide-y">
+        <span>©EthGlobal 2023.</span>
         <span>
-          Built by <a href="">lovelace</a> and <a href="">kenny</a>
+          Built by{" "}
+          <a href="" className="text-blue-500">
+            lovelace{" "}
+          </a>
+          and{" "}
+          <a href="" className="text-blue-500">
+            kenny
+          </a>
         </span>
       </footer>
     </div>
