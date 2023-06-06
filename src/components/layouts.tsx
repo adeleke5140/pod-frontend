@@ -5,19 +5,36 @@ interface LayoutProps {
 function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 via-transparent to-transparent font-supreme">
-      <nav className="flex justify-around pt-4">
+      <nav className="relative z-20 flex justify-around pt-4">
         <span className="rounded-b-2xl bg-blue-600 p-4 font-semibold text-white">
           POD
         </span>
         <ul className="flex gap-2">
           <li>
-            <a href="">About</a>
+            <a
+              href="#"
+              className="cursor-pointer transition-colors hover:text-blue-600"
+            >
+              About
+            </a>
           </li>
           <li>
-            <a href=""> Issuers</a>
+            <a
+              href="#"
+              className="cursor-pointer transition-colors hover:text-blue-600"
+            >
+              {" "}
+              Issuers
+            </a>
           </li>
           <li>
-            <a href=""> Builders</a>
+            <a
+              href="#"
+              className="cursor-pointer transition-colors hover:text-blue-600"
+            >
+              {" "}
+              Builders
+            </a>
           </li>
         </ul>
       </nav>
