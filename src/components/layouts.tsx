@@ -41,7 +41,7 @@ function Layout({ children }: LayoutProps) {
                   <path d="M.5 200V.5H200" fill="none"></path>
                 </pattern>
               </defs>
-              <svg x="50%" y="50%" class="overflow-visible fill-blue-50">
+              <svg x="50%" y="50%" className="overflow-visible fill-blue-50">
                 <path
                   d="M-300 0h201v201h-201Z M300 200h201v201h-201Z"
                   stroke-width="0"
