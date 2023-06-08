@@ -18,5 +18,9 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  env: {
+    client_id: "47cc3082e1787dc6c1b6",
+    redirect_uri: "http://localhost:3000/home",
+  },
 };
 export default config;
