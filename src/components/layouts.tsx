@@ -1,3 +1,4 @@
+import Link from "next/link";
 interface LayoutProps {
   children: React.ReactNode;
 }
@@ -5,35 +6,29 @@ interface LayoutProps {
 function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 via-transparent to-transparent font-supreme">
-      <nav className="relative z-20 flex justify-around pt-4">
-        <span className="rounded-b-2xl bg-blue-600 p-4 font-semibold text-white">
+      <nav className="relative z-20 mx-auto my-0 flex max-w-6xl justify-between pt-4 text-lg">
+        <Link
+          href="/"
+          className="rounded-b-2xl bg-blue-600 p-4 font-semibold text-white"
+        >
           POD
-        </span>
+        </Link>
         <ul className="flex gap-2">
           <li>
-            <a
-              href="#"
-              className="cursor-pointer transition-colors hover:text-blue-600"
+            <Link
+              href="/about"
+              className="cursor-pointer rounded-lg p-1 px-2 transition-colors hover:bg-slate-200 "
             >
               About
-            </a>
+            </Link>
           </li>
           <li>
             <a
               href="#"
-              className="cursor-pointer transition-colors hover:text-blue-600"
+              className="cursor-pointer rounded-lg p-1 px-2 transition-colors hover:bg-slate-200 "
             >
               {" "}
               Issuers
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="cursor-pointer transition-colors hover:text-blue-600"
-            >
-              {" "}
-              Builders
             </a>
           </li>
         </ul>
@@ -73,7 +68,10 @@ function Layout({ children }: LayoutProps) {
             </svg>
           </div>
         </div>
-        <div className="relative z-20"> {children}</div>
+        <div className="relative z-20 mx-auto my-0 mt-12 flex max-w-6xl flex-col gap-8 text-center">
+          {" "}
+          {children}
+        </div>
       </main>
       <footer className="absolute bottom-0 flex w-full items-center justify-center gap-2 divide-y">
         <span>©EthGlobal 2023.</span>
