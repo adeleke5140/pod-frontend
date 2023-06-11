@@ -3,6 +3,7 @@ import Layout from "~/components/layouts";
 import { useRepos } from "~/lib/zustand/codeSlice";
 import * as Form from "@radix-ui/react-form";
 import { ArrowRight } from "react-feather";
+import Link from "next/link";
 
 const RepoPage = () => {
   const repos = useRepos();
@@ -18,21 +19,35 @@ const RepoPage = () => {
   return (
     <Layout>
       <div className="mt-16 flex flex-col gap-8 text-left">
-        <h1 className="mb-8 font-bespoke text-7xl font-bold">
+        <Link
+          href="/home"
+          className="w-max rounded-b-lg p-1 shadow transition-shadow ease-linear hover:shadow-md"
+        >
+          All repos
+        </Link>
+        <h1 className="mb-6 font-bespoke text-7xl font-bold">
           Create a POD for this REPO
         </h1>
         <div>
           <h2>
-            <span className="text-lg font-medium">Repo:</span> {repo?.name}
+            <span className="text-lg font-medium opacity-50">Repo:</span>
+            <span className="text-xl"> {repo?.name}</span>
           </h2>
           <p>
-            <span className="text-lg font-medium">Description:</span>{" "}
-            {repo?.description}
+            <span className="text-lg font-medium opacity-50">Description:</span>{" "}
+            <span className="text-xl "> {repo?.description}</span>
           </p>
         </div>
 
         <div className="">
-          <Form.Root className="flex w-[500px] flex-col gap-6">
+          <Form.Root
+            onSubmit={(e) => {
+              e.preventDefault();
+              const data = Object.fromEntries(new FormData(e.currentTarget));
+              console.log(data);
+            }}
+            className="flex w-[500px] flex-col gap-6"
+          >
             <Form.Field className="mb-[10px] grid" name="name">
               <div className="flex items-baseline justify-between">
                 <Form.Label className="text-[15px] font-medium leading-[35px]">
@@ -53,7 +68,7 @@ const RepoPage = () => {
               </div>
               <Form.Control asChild>
                 <input
-                  className="selection:color-white box-border inline-flex h-[50px] w-full appearance-none items-center justify-center rounded-[4px] px-[10px] text-xl leading-none shadow-[0_0_0_1px] shadow-blue-500 outline-none selection:bg-blue-100  focus:ring-2 focus:ring-blue-600"
+                  className="selection:color-white box-border inline-flex h-[50px] w-full appearance-none items-center justify-center rounded-[4px] px-[10px] text-xl leading-none shadow-[0_0_0_1px] shadow-gray-400 outline-none selection:bg-blue-100 focus:ring-2 focus:ring-blue-600"
                   type="text"
                   required
                 />
@@ -77,7 +92,7 @@ const RepoPage = () => {
               <Form.Control asChild>
                 <input
                   type="number"
-                  className="selection:color-black box-border inline-flex h-[50px] w-full resize-none appearance-none items-center justify-center rounded-[4px] p-[10px] text-xl leading-none shadow-[0_0_0_1px] shadow-blue-500 outline-none selection:bg-blue-100  focus:ring-2 focus:ring-blue-500"
+                  className="selection:color-black box-border inline-flex h-[50px] w-full resize-none appearance-none items-center justify-center rounded-[4px] p-[10px] text-xl leading-none shadow-[0_0_0_1px] shadow-gray-400 outline-none selection:bg-blue-100  focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </Form.Control>
@@ -91,7 +106,7 @@ const RepoPage = () => {
               <Form.Control asChild>
                 <input
                   type="number"
-                  className="selection:color-black box-border inline-flex h-[50px] w-full resize-none appearance-none items-center justify-center rounded-[4px] border-blue-200 p-[10px] text-xl leading-none shadow-[0_0_0_1px] shadow-blue-500 outline-none selection:bg-blue-100 focus:ring-2 focus:ring-blue-500"
+                  className="selection:color-black box-border inline-flex h-[50px] w-full resize-none appearance-none items-center justify-center rounded-[4px] border-blue-200 p-[10px] text-xl leading-none shadow-[0_0_0_1px] shadow-gray-400 outline-none selection:bg-blue-100 focus:ring-2 focus:ring-blue-500"
                 />
               </Form.Control>
             </Form.Field>
