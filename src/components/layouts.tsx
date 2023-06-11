@@ -22,15 +22,6 @@ function Layout({ children }: LayoutProps) {
               About
             </Link>
           </li>
-          <li>
-            <a
-              href="#"
-              className="cursor-pointer rounded-lg p-1 px-2 transition-colors hover:bg-slate-200 "
-            >
-              {" "}
-              Issuers
-            </a>
-          </li>
         </ul>
       </nav>
       <main>
