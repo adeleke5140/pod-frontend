@@ -5,29 +5,60 @@ import { ArrowRight, UserCheck } from "react-feather";
 import { redirectURL } from "../constants";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { useCode, useAuthActions, useRepos } from "~/lib/zustand/codeSlice";
+import {
+  useCode,
+  useAuthActions,
+  useRepos,
+  useAccessToken,
+} from "~/lib/zustand/codeSlice";
+import { Repos } from "~/components/repos";
 
 const Home: NextPage = () => {
   const router = useRouter();
   const code = useCode();
-  const { setCode, fetchAccessToken, fetchRepos } = useAuthActions();
+  const token = useAccessToken();
+  const { setCode, fetchAccessToken, fetchRepos, clearCache } =
+    useAuthActions();
   const repos = useRepos();
 
-  console.log(repos);
+  console.log({
+    code,
+    token,
+  });
+
+  console.log({
+    repos,
+  });
+
   useEffect(() => {
     const code = router.query.code;
     if (code && !Array.isArray(code)) {
       setCode(code);
       console.log(code);
     }
-    void (async () => {
-      code && (await fetchAccessToken());
-      code && (await fetchRepos());
-    })();
-  }, [router, setCode, fetchAccessToken, fetchRepos]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
+
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) {
+      void (async () => {
+        if (!token) {
+          code && (await fetchAccessToken());
+        }
+        token && (await fetchRepos());
+      })();
+    }
+
+    return () => {
+      isMounted = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token, code]);
 
   const clearCode = () => {
     setCode("");
+    clearCache();
     void router.replace("/home", undefined, { shallow: true });
   };
 
@@ -44,7 +75,6 @@ const Home: NextPage = () => {
             {code ? "Welome to POD!" : "Authorize"}
           </h1>
           <div className="flex gap-4">
-            {" "}
             <a
               href={redirectURL}
               className={`${
@@ -69,13 +99,7 @@ const Home: NextPage = () => {
             )}
           </div>
         </div>
-        <div className="text-left">
-          <h2 className="text-3xl font-semibold">Repositories</h2>
-          <p className="text-md">
-            Select one that you would like to get contributions for and reward
-            devs with PODs
-          </p>
-        </div>
+        <Repos />
       </Layout>
     </>
   );
