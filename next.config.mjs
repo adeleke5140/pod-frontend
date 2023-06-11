@@ -19,7 +19,7 @@ const config = {
     defaultLocale: "en",
   },
   env: {
-    client_id: "47cc3082e1787dc6c1b6",
+    client_id: "f60f190806923e18f3ed",
     redirect_uri: "http://localhost:3000/home",
   },
 };

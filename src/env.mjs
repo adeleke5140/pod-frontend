@@ -8,8 +8,8 @@ export const env = createEnv({
    */
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
-    client_id: z.string()
-    redirect_uri: z.string()
+    client_id: z.string(),
+    redirect_uri: z.string(),
   },
 
   /**
@@ -28,7 +28,7 @@ export const env = createEnv({
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
     client_id: process.env.client_id,
-    redirect_uri: process.env.redirect_uri
+    redirect_uri: process.env.redirect_uri,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
