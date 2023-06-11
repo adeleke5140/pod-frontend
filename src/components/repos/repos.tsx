@@ -1,6 +1,6 @@
 import { useRepos, useLoading } from "~/lib/zustand/codeSlice";
-import { ButtonCard, Heading, Text, Spinner } from "degen";
 import Link from "next/link";
+import { Spinner } from "../spinner";
 
 const Repos = () => {
   const repos = useRepos();
@@ -17,7 +17,7 @@ const Repos = () => {
         <div className="grid gap-5 md:grid-cols-2">
           {loading && (
             <>
-              <Spinner color="blue" />
+              <Spinner size="md" />
             </>
           )}
           {repos.map((repo) => (
