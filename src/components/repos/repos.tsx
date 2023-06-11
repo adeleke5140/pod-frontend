@@ -10,14 +10,13 @@ const Repos = () => {
     <>
       <div className="text-left">
         <h2 className="text-3xl font-semibold">Repositories</h2>
-        <p className="text-md mb-8">
-          Select one that you would like to get contributions for and reward
-          devs with PODs
+        <p className="mb-8 text-lg">
+          Once authorized, select a repositories to associate with your POD.
         </p>
         <div className="grid gap-5 md:grid-cols-2">
           {loading && (
             <>
-              <Spinner size="md" />
+              <Spinner size="sm" />
             </>
           )}
           {repos.map((repo) => (
@@ -26,17 +25,15 @@ const Repos = () => {
               key={repo.name}
               className="mb-4 flex h-auto flex-col gap-3 rounded-lg border-2 border-gray-200 p-6 font-supreme shadow-transparent transition-colors hover:border-blue-600 hover:bg-slate-50"
             >
-              <h3>
-                <span className="text-sm">repo:</span>{" "}
-                <span className="text-xl font-bold">{repo.name}</span>
-              </h3>
+              <h3 className="text-2xl font-semibold">{repo.name}</h3>
               {repo.description ? (
-                <span>details: {repo.description}</span>
+                <span>Details: {repo.description}</span>
               ) : (
                 <span>No description</span>
               )}
             </Link>
           ))}
+          {!repos.length && <p>No repos yet...</p>}
         </div>
       </div>
     </>
