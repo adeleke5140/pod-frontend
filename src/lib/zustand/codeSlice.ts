@@ -31,7 +31,7 @@ interface UserRepoServerResponse {
   data: UserRepoData;
 }
 
-interface UserRepo {
+export interface UserRepo {
   name: string;
   link: string;
   isForked: boolean;
