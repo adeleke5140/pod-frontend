@@ -5,8 +5,8 @@ interface LayoutProps {
 
 function Layout({ children }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-transparent to-transparent font-supreme">
-      <nav className="relative z-20 mx-auto my-0 flex max-w-6xl justify-between pt-4 text-lg">
+    <div className="flex min-h-screen flex-col bg-gradient-to-b from-blue-50 via-transparent to-transparent px-4 font-supreme md:px-8">
+      <nav className="relative z-20 mx-auto my-0 flex w-full max-w-6xl justify-between pt-4 text-lg">
         <Link
           href="/"
           className="rounded-b-2xl bg-blue-600 p-4 font-semibold text-white"
@@ -69,11 +69,10 @@ function Layout({ children }: LayoutProps) {
           </div>
         </div>
         <div className="relative z-20 mx-auto my-0 mt-12 flex max-w-6xl flex-col gap-8 text-center">
-          {" "}
           {children}
         </div>
       </main>
-      <footer className="absolute bottom-0 flex w-full items-center justify-center gap-2 divide-y">
+      <footer className="mt-auto flex w-full items-center justify-center gap-2 divide-y">
         <span>©EthGlobal 2023.</span>
         <span>
           Built by{" "}
