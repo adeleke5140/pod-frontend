@@ -43,8 +43,8 @@ const Home: NextPage = () => {
     let isMounted = true;
     if (isMounted) {
       void (async () => {
-        if (!token) {
-          code && (await fetchAccessToken());
+        if (!token && code) {
+          await fetchAccessToken();
         }
         token && (await fetchRepos());
       })();
@@ -74,13 +74,13 @@ const Home: NextPage = () => {
           <h1 className="font-bespoke text-7xl font-bold">
             {code ? "Welome to POD!" : "Authorize"}
           </h1>
-          <div className="flex gap-4">
+          <div className="absolute right-0 flex gap-4">
             <a
               href={redirectURL}
               className={`${
                 // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                 code ? "pointer-events-none" : null
-              } group flex cursor-pointer gap-2 self-start rounded-3xl bg-blue-600 px-5 py-3 text-xl font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:opacity-50`}
+              } text-md group flex cursor-pointer gap-2 self-start rounded-3xl bg-blue-600 px-5 py-3 font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:opacity-50`}
             >
               {code ? "Authorized" : "Authorize with Github"}
               {!code ? (
@@ -92,7 +92,7 @@ const Home: NextPage = () => {
             {code && (
               <button
                 onClick={clearCode}
-                className="group flex cursor-pointer gap-2 self-start rounded-3xl bg-red-500 px-5 py-3 text-xl font-semibold text-white transition-colors ease-out hover:bg-red-600 disabled:opacity-50"
+                className="text-md group flex cursor-pointer gap-2 self-start rounded-3xl bg-red-500 px-5 py-3 font-semibold text-white transition-colors ease-out hover:bg-red-600 disabled:opacity-50"
               >
                 Disconnect
               </button>
