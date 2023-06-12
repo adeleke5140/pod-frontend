@@ -18,11 +18,6 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
-  env: {
-    client_id: "f60f190806923e18f3ed",
-    redirect_uri: "http://localhost:3000/home",
-    web3StorageToken:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDIxNjg3NDE5RDgzRjgyNTBkNzI1RjliOTM2ZjQxNmMxMTVkRGNkQUMiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODY1ODg2MzM2MjQsIm5hbWUiOiJwZG8ifQ.1JSa-uuvzt4_EXA8TqvhFL9nF12LDwVeosZpWAwmprM",
-  },
+  env: {},
 };
 export default config;
