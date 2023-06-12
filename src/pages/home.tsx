@@ -25,8 +25,7 @@ const Home: NextPage = () => {
     if (code && !Array.isArray(code)) {
       setCode(code);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code]);
+  }, [code, setCode, router]);
 
   useEffect(() => {
     let isMounted = true;
@@ -38,7 +37,7 @@ const Home: NextPage = () => {
     return () => {
       isMounted = false;
     };
-  }, [token, code, fetchAccessToken, fetchRepos]);
+  }, [code, fetchAccessToken]);
 
   useEffect(() => {
     let isMounted = true;
@@ -50,21 +49,11 @@ const Home: NextPage = () => {
     };
   }, [token, fetchRepos]);
 
-  useEffect(() => {
-    let isMounted = true;
-    if (code) {
-      isMounted && toast.success("Authorized Successfully!");
-    }
-    return () => {
-      isMounted = false;
-    };
-  }, [code]);
-
   const clearCode = () => {
     clearCache();
     void router.replace("/home", undefined, { shallow: true });
     void router.push("/");
-    toast.success("Logged out successfully!");
+    toast.success("Logged out successfully!", { duration: 2000 });
   };
 
   return (
