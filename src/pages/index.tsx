@@ -6,9 +6,9 @@ import { SignupDialog } from "~/components/signupModal/modalTrigger";
 
 const Index: NextPage = () => {
   function showDialog() {
-    console.log("clicked");
     SignupDialog.show();
   }
+
   return (
     <>
       <Head>
@@ -17,13 +17,15 @@ const Index: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <div className="flex flex-col gap-8 text-center">
+        <div className="mx-auto my-0 flex max-w-2xl flex-col gap-8 text-center">
           <div>
-            <h1 className="text-center font-bespoke text-5xl font-bold capitalize md:mt-[6%] md:text-9xl">
+            <h1 className="text-center font-bespoke text-5xl font-bold capitalize md:mt-[6%] md:text-8xl">
               Proof of <span className="text-blue-600">development</span>
             </h1>
             <p className="mt-8 text-lg sm:text-xl">
-              Rewarding developers for their contributions to open source
+              Reward developers for their contributions to open source.
+              Incentivize quality open source contributions by assigning a POD
+              to your open source project.
             </p>
           </div>
 
