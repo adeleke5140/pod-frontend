@@ -3,7 +3,6 @@ import Layout from "~/components/layouts";
 import { useAccessToken, useRepos } from "~/lib/zustand/codeSlice";
 import * as Form from "@radix-ui/react-form";
 import { ArrowRight, Check } from "react-feather";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { uploadPOD } from "~/lib/web3.storage/uploadPOD";
 import { Spinner } from "~/components/spinner";
