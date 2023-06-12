@@ -66,11 +66,11 @@ function Layout({ children }: LayoutProps) {
       <footer className="mt-auto flex w-full items-center justify-center gap-2 divide-y">
         <span>©EthGlobal 2023.</span>
         <span>
-          Built by{" "}
+          backend and contract by{" "}
           <a href="" className="text-blue-600">
-            lovelace{" "}
+            lovelace
           </a>
-          and{" "}
+          , frontend by{" "}
           <a href="" className="text-blue-600">
             kenny
           </a>
