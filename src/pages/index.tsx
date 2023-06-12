@@ -19,7 +19,7 @@ const Index: NextPage = () => {
               Proof of <span className="text-blue-600">development</span>
             </h1>
             <p className="mt-8 text-lg sm:text-xl">
-              Elevate Your Brand with Exceptional Collectibles from POD.
+              Rewarding developers for their contributions to open source
             </p>
           </div>
 
