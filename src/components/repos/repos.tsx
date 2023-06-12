@@ -14,6 +14,7 @@ const Repos = () => {
           Once authorized, select a repositories to associate with your POD.
         </p>
         <div className="grid gap-5 md:grid-cols-2">
+          {!repos.length && !loading && <p>No repos yet...</p>}
           {loading && (
             <>
               <Spinner size="sm" />
@@ -33,7 +34,6 @@ const Repos = () => {
               )}
             </Link>
           ))}
-          {!repos.length && <p>No repos yet...</p>}
         </div>
       </div>
     </>
