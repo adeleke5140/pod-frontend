@@ -10,6 +10,7 @@ export const env = createEnv({
     NODE_ENV: z.enum(["development", "test", "production"]),
     client_id: z.string(),
     redirect_uri: z.string(),
+    web3StorageToken: z.string(),
   },
 
   /**
@@ -29,6 +30,7 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     client_id: process.env.client_id,
     redirect_uri: process.env.redirect_uri,
+    web3StorageToken: process.env.web3StorageToken,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
