@@ -1,24 +1,27 @@
 import { useRouter } from "next/router";
 import Layout from "~/components/layouts";
-import { useRepos } from "~/lib/zustand/codeSlice";
+import { useAccessToken, useRepos } from "~/lib/zustand/codeSlice";
 import * as Form from "@radix-ui/react-form";
 import { ArrowRight } from "react-feather";
 import Link from "next/link";
+import { use, useEffect } from "react";
 
 const RepoPage = () => {
   const repos = useRepos();
+  const token = useAccessToken();
   const router = useRouter();
   const { id: name } = router.query;
 
   const repo = repos.filter((repo) => repo.name === name)[0];
-  console.log({ repos });
-  console.log({
-    name,
-    repo,
+
+  useEffect(() => {
+    if (!token) {
+      void router.push("/home");
+    }
   });
   return (
     <Layout>
-      <div className="mt-16 flex flex-col gap-8 text-left">
+      <div className="mx-auto mt-16 flex max-w-xl flex-col gap-8 pb-8 text-left">
         <Link
           href="/home"
           className="w-max rounded-b-lg p-1 shadow transition-shadow ease-linear hover:shadow-md"
@@ -26,20 +29,28 @@ const RepoPage = () => {
           All repos
         </Link>
         <h1 className="mb-6 font-bespoke text-7xl font-bold">
-          Create a POD for this REPO
+          Create a <span className="text-blue-500">POD</span>
         </h1>
         <div>
           <h2>
-            <span className="text-lg font-medium opacity-50">Repo:</span>
+            <span className="text-xl font-medium opacity-50">Repo:</span>
             <span className="text-xl"> {repo?.name}</span>
           </h2>
           <p>
-            <span className="text-lg font-medium opacity-50">Description:</span>{" "}
-            <span className="text-xl "> {repo?.description}</span>
+            <span className="text-xl font-medium opacity-50">Description:</span>{" "}
+            <span className=" text-xl">
+              {" "}
+              {repo?.description || "No Description"}
+            </span>
           </p>
         </div>
 
         <div className="">
+          <p className="mb-4 text-blue-500">
+            Tip: You need to fill in the name of the POD, the minimum
+            contribution developer would have to make, a max supply and an image
+            of the POD.
+          </p>
           <Form.Root
             onSubmit={(e) => {
               e.preventDefault();
@@ -131,7 +142,7 @@ const RepoPage = () => {
               </Form.Control>
             </Form.Field>
             <Form.Submit asChild>
-              <button className="group flex cursor-pointer items-center justify-center gap-2 self-start rounded-3xl bg-blue-600 px-5 py-3 text-xl font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:opacity-50">
+              <button className="group flex cursor-pointer items-center justify-center gap-2 self-end rounded-3xl bg-blue-600 px-5 py-3 text-xl font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:opacity-50">
                 <span> Create POD</span>
                 <ArrowRight className="transition-transform group-hover:translate-x-1" />{" "}
               </button>
