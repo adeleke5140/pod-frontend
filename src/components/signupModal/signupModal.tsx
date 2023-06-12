@@ -1,6 +1,7 @@
 import { redirectURL } from "~/constants";
 import { ArrowRight } from "react-feather";
 import { DialogCloseButton } from "../dialog/dialogCloseButton";
+
 export const SignupModal = () => {
   return (
     <div className="flex w-[90vw] max-w-[600px] flex-col rounded-lg bg-white p-10 px-12 text-center shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px]">
