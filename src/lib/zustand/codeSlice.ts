@@ -98,6 +98,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
       const token = get().access_token;
       if (!token) return console.log("No token, can't make request ❌");
       try {
+        set((state) => ({ ...state, loading: true }));
         console.log("fetching repos...🎉");
         const { data } = await axios.post<UserRepoServerResponse>(
           githubRepoURL,
@@ -107,8 +108,10 @@ const useAuthStore = create<AuthState>((set, get) => ({
         );
 
         const repos = data.data.publicRepos;
+        set((state) => ({ ...state, loading: false }));
         set((state) => ({ ...state, repos }));
       } catch (e) {
+        set((state) => ({ ...state, loading: false }));
         console.log(e);
       }
     },
