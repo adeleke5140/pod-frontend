@@ -21,7 +21,7 @@ const RepoPage = () => {
   });
   return (
     <Layout>
-      <div className="mx-auto mt-16 flex max-w-xl flex-col gap-8 pb-8 text-left">
+      <div className="mx-auto flex max-w-xl flex-col gap-8 pb-8 text-left">
         <Link
           href="/home"
           className="w-max rounded-b-lg p-1 shadow transition-shadow ease-linear hover:shadow-md"
