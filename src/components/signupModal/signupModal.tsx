@@ -4,11 +4,11 @@ import { DialogCloseButton } from "../dialog/dialogCloseButton";
 
 export const SignupModal = () => {
   return (
-    <div className="flex w-[90vw] max-w-[600px] flex-col rounded-lg bg-white p-10 px-12 text-center shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px]">
+    <div className="flex w-[90vw] max-w-[600px] flex-col rounded-lg bg-white p-10 text-center shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px]">
       <DialogCloseButton />
       <div className="flex flex-col px-10">
         <h1 className="mb-6 font-bespoke text-4xl font-bold">
-          Create your first <span className="text-blue-500">POD</span>
+          Sign In to <span className="text-blue-500">POD</span>
         </h1>
         <a
           href={redirectURL}

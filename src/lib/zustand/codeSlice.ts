@@ -95,6 +95,13 @@ const useAuthStore = create<AuthState>((set, get) => ({
       }
     },
     fetchRepos: async () => {
+      const cache = get().cache;
+      if (cache["repos"]) {
+        console.log("using cached repos");
+        const repos = cache["repos"] as UserRepo[];
+        set((state) => ({ ...state, repos }));
+        return;
+      }
       const token = get().access_token;
       if (!token) return console.log("No token, can't make request ❌");
       try {
@@ -110,6 +117,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
         const repos = data.data.publicRepos;
         set((state) => ({ ...state, loading: false }));
         set((state) => ({ ...state, repos }));
+        cache["repos"] = repos;
       } catch (e) {
         set((state) => ({ ...state, loading: false }));
         console.log(e);
@@ -126,3 +134,4 @@ export const useAccessToken = () => useAuthStore((state) => state.access_token);
 export const useAuthActions = () => useAuthStore((state) => state.actions);
 export const useRepos = () => useAuthStore((state) => state.repos);
 export const useLoading = () => useAuthStore((state) => state.loading);
+export const useCache = () => useAuthStore((state) => state.cache);

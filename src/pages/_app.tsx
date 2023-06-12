@@ -2,16 +2,24 @@ import type { AppProps } from "next/app";
 import "~/styles/globals.css";
 import { bespokeStencil, supremeFont } from "~/fonts/setup";
 import { DialogRoot } from "~/components/dialog/dialogRoot";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Toaster } from "sonner";
+
 const MyApp = ({ Component, pageProps }: AppProps) => {
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (containerRef.current) setContainer(containerRef.current);
+  }, []);
+
   return (
     <>
       <div
         ref={containerRef}
         className={`${bespokeStencil.variable} ${supremeFont.variable}`}
       >
-        <DialogRoot container={containerRef.current} />
+        <Toaster position="top-center" />
+        <DialogRoot container={container} />
         <Component {...pageProps} />
       </div>
     </>

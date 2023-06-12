@@ -1,17 +1,17 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Layout from "~/components/layouts";
-import { ArrowRight, UserCheck } from "react-feather";
+import { UserCheck } from "react-feather";
 import { redirectURL } from "../constants";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   useCode,
   useAuthActions,
-  useRepos,
   useAccessToken,
 } from "~/lib/zustand/codeSlice";
 import { Repos } from "~/components/repos";
+import { toast } from "sonner";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -19,47 +19,41 @@ const Home: NextPage = () => {
   const token = useAccessToken();
   const { setCode, fetchAccessToken, fetchRepos, clearCache } =
     useAuthActions();
-  const repos = useRepos();
-
-  console.log({
-    code,
-    token,
-  });
-
-  console.log({
-    repos,
-  });
 
   useEffect(() => {
     const code = router.query.code;
     if (code && !Array.isArray(code)) {
       setCode(code);
-      console.log(code);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
+  }, [code, setCode, router]);
 
   useEffect(() => {
     let isMounted = true;
+
     if (isMounted) {
-      void (async () => {
-        if (!token && code) {
-          await fetchAccessToken();
-        }
-        token && (await fetchRepos());
-      })();
+      code && void fetchAccessToken();
     }
 
     return () => {
       isMounted = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token, code]);
+  }, [code, fetchAccessToken]);
+
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) {
+      token && void fetchRepos();
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [token, fetchRepos]);
 
   const clearCode = () => {
-    setCode("");
     clearCache();
     void router.replace("/home", undefined, { shallow: true });
+    void router.push("/");
+    toast.success("Logged out successfully!", { duration: 2000 });
   };
 
   return (
@@ -71,9 +65,7 @@ const Home: NextPage = () => {
       </Head>
       <Layout>
         <div className="mt-16 flex flex-col gap-8 text-left">
-          <h1 className="font-bespoke text-7xl font-bold">
-            {code ? "Welome to POD!" : "Authorize"}
-          </h1>
+          <h1 className="font-bespoke text-7xl font-bold">Welome to POD!</h1>
           <div className="flex gap-4 md:absolute md:right-0">
             <a
               href={redirectURL}
@@ -82,21 +74,16 @@ const Home: NextPage = () => {
                 code ? "pointer-events-none" : null
               } text-md group flex cursor-pointer gap-2 self-start rounded-3xl bg-blue-600 px-5 py-3 font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:opacity-50`}
             >
-              {code ? "Authorized" : "Authorize with Github"}
-              {!code ? (
-                <ArrowRight className="transition-transform group-hover:translate-x-1" />
-              ) : (
-                <UserCheck />
-              )}
+              Authorized
+              <UserCheck />
             </a>
-            {code && (
-              <button
-                onClick={clearCode}
-                className="text-md group flex cursor-pointer gap-2 self-start rounded-3xl bg-red-500 px-5 py-3 font-semibold text-white transition-colors ease-out hover:bg-red-600 disabled:opacity-50"
-              >
-                Log out
-              </button>
-            )}
+
+            <button
+              onClick={clearCode}
+              className="text-md group flex cursor-pointer gap-2 self-start rounded-3xl bg-red-500 px-5 py-3 font-semibold text-white transition-colors ease-out hover:bg-red-600 disabled:opacity-50"
+            >
+              Log out
+            </button>
           </div>
         </div>
         <Repos />

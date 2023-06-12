@@ -4,15 +4,23 @@ import { useAccessToken, useRepos } from "~/lib/zustand/codeSlice";
 import * as Form from "@radix-ui/react-form";
 import { ArrowRight } from "react-feather";
 import Link from "next/link";
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 
 const RepoPage = () => {
   const repos = useRepos();
   const token = useAccessToken();
   const router = useRouter();
   const { id: name } = router.query;
+  const code = router.query.code;
 
   const repo = repos.filter((repo) => repo.name === name)[0];
+
+  function navigateToAll() {
+    void router.replace({
+      pathname: "/home",
+      query: { code },
+    });
+  }
 
   useEffect(() => {
     if (!token) {
@@ -21,13 +29,13 @@ const RepoPage = () => {
   });
   return (
     <Layout>
-      <div className="mx-auto mt-16 flex max-w-xl flex-col gap-8 pb-8 text-left">
-        <Link
-          href="/home"
+      <div className="mx-auto flex max-w-xl flex-col gap-8 pb-8 text-left">
+        <button
+          onClick={navigateToAll}
           className="w-max rounded-b-lg p-1 shadow transition-shadow ease-linear hover:shadow-md"
         >
           All repos
-        </Link>
+        </button>
         <h1 className="mb-6 font-bespoke text-7xl font-bold">
           Create a <span className="text-blue-500">POD</span>
         </h1>
