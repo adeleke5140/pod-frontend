@@ -1,10 +1,12 @@
 import { useRepos, useLoading } from "~/lib/zustand/codeSlice";
 import Link from "next/link";
 import { Spinner } from "../spinner";
+import { useRouter } from "next/router";
 
 const Repos = () => {
   const repos = useRepos();
   const loading = useLoading();
+  const router = useRouter();
   console.log(repos);
   return (
     <>
@@ -22,7 +24,12 @@ const Repos = () => {
           )}
           {repos.map((repo) => (
             <Link
-              href={`/repos/${repo.name}`}
+              href={{
+                pathname: `/repos/${repo.name}`,
+                query: { ...router.query },
+              }}
+              passHref={true}
+              shallow={true}
               key={repo.name}
               className="mb-4 flex h-auto flex-col gap-3 rounded-lg border-2 border-gray-200 p-6 font-supreme shadow-transparent transition-colors hover:border-blue-600 hover:bg-slate-50"
             >
