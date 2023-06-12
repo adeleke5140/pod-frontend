@@ -3,8 +3,12 @@ import Head from "next/head";
 import Layout from "~/components/layouts";
 import { ArrowRight } from "react-feather";
 import Link from "next/link";
+import { SignupDialog } from "~/components/signupModal/modalTrigger";
 
 const Index: NextPage = () => {
+  function showDialog() {
+    SignupDialog.show();
+  }
   return (
     <>
       <Head>
@@ -23,13 +27,20 @@ const Index: NextPage = () => {
             </p>
           </div>
 
-          <Link
+          {/* <Link
             href="/home"
             className="group flex cursor-pointer items-center justify-center gap-2 self-center rounded-3xl bg-blue-600 px-5 py-3 text-xl font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:opacity-50"
           >
-            Let&apos;s go
+            Get Started
             <ArrowRight className="transition-transform group-hover:translate-x-1" />
-          </Link>
+          </Link> */}
+          <button
+            onClick={showDialog}
+            className="group flex cursor-pointer items-center justify-center gap-2 self-center rounded-3xl bg-blue-600 px-5 py-3 text-xl font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:opacity-50"
+          >
+            Get Started
+            <ArrowRight className="transition-transform group-hover:translate-x-1" />
+          </button>
         </div>
       </Layout>
     </>

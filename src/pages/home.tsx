@@ -4,7 +4,7 @@ import Layout from "~/components/layouts";
 import { ArrowRight, UserCheck } from "react-feather";
 import { redirectURL } from "../constants";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   useCode,
   useAuthActions,
@@ -74,7 +74,7 @@ const Home: NextPage = () => {
           <h1 className="font-bespoke text-7xl font-bold">
             {code ? "Welome to POD!" : "Authorize"}
           </h1>
-          <div className="absolute right-0 flex gap-4">
+          <div className="flex gap-4 md:absolute md:right-0">
             <a
               href={redirectURL}
               className={`${
@@ -94,7 +94,7 @@ const Home: NextPage = () => {
                 onClick={clearCode}
                 className="text-md group flex cursor-pointer gap-2 self-start rounded-3xl bg-red-500 px-5 py-3 font-semibold text-white transition-colors ease-out hover:bg-red-600 disabled:opacity-50"
               >
-                Disconnect
+                Log out
               </button>
             )}
           </div>
