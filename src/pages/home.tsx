@@ -11,7 +11,7 @@ import {
   useAccessToken,
 } from "~/lib/zustand/codeSlice";
 import { Repos } from "~/components/repos";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -19,6 +19,16 @@ const Home: NextPage = () => {
   const token = useAccessToken();
   const { setCode, fetchAccessToken, fetchRepos, clearCache } =
     useAuthActions();
+
+  useEffect(() => {
+    let isMounted = true;
+    if (code) {
+      isMounted && toast.success("Authorized");
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [code]);
 
   useEffect(() => {
     const code = router.query.code;
