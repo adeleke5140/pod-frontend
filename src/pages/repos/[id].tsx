@@ -6,8 +6,9 @@ import { ArrowRight, Check } from "react-feather";
 import { useEffect, useState } from "react";
 import { uploadPOD } from "~/lib/web3.storage/uploadPOD";
 import { Spinner } from "~/components/spinner";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { ConnectKitButton } from "connectkit";
+import { useSignMessage } from "wagmi";
 
 interface Data {
   "contributions-required": string;
@@ -26,6 +27,10 @@ const RepoPage = () => {
   const [cid, setCid] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const repo = repos.filter((repo) => repo.name === name)[0];
+  const [signedMessage, setSignedMessage] = useState<unknown>("");
+  const { data, isError, isLoading, isSuccess, signMessage } = useSignMessage({
+    message: "Sign this message to verify your identity",
+  });
 
   function navigateToAll() {
     void router.replace({
@@ -36,9 +41,18 @@ const RepoPage = () => {
 
   useEffect(() => {
     if (!token) {
-      void router.push("/home");
+      void router.push("/");
     }
   });
+
+  function handleSignMessage() {
+    signMessage();
+  }
+
+  useEffect(() => {
+    isError && toast.error("Error signing message");
+    isSuccess && setSignedMessage(data);
+  }, [isError, isSuccess, data]);
 
   async function handleCreatePOD(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -93,7 +107,7 @@ const RepoPage = () => {
               </div>
               <Form.Control asChild>
                 <input
-                  className="selection:color-white box-border inline-flex h-[50px] w-full appearance-none items-center justify-center rounded-[4px] px-[10px] text-xl leading-none shadow-[0_0_0_1px] shadow-gray-400 outline-none selection:bg-blue-100 focus:ring-2 focus:ring-blue-600"
+                  className="selection:color-white box-border inline-flex h-[50px] w-full appearance-none items-center justify-center rounded-xl px-[10px] text-xl leading-none shadow-[0_0_0_1.2px] shadow-gray-400 outline-none selection:bg-blue-100 focus:ring-2 focus:ring-blue-600"
                   type="text"
                   required
                   readOnly
@@ -119,7 +133,7 @@ const RepoPage = () => {
               <Form.Control asChild>
                 <input
                   type="number"
-                  className="selection:color-black box-border inline-flex h-[50px] w-full resize-none appearance-none items-center justify-center rounded-[4px] p-[10px] text-xl leading-none shadow-[0_0_0_1px] shadow-gray-400 outline-none selection:bg-blue-100  focus:ring-2 focus:ring-blue-500"
+                  className="selection:color-black box-border inline-flex h-[50px] w-full resize-none appearance-none items-center justify-center rounded-xl p-[10px] text-xl leading-none shadow-[0_0_0_1.2px] shadow-gray-400 outline-none selection:bg-blue-100  focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </Form.Control>
@@ -133,7 +147,7 @@ const RepoPage = () => {
               <Form.Control asChild>
                 <input
                   type="number"
-                  className="selection:color-black box-border inline-flex h-[50px] w-full resize-none appearance-none items-center justify-center rounded-[4px] border-blue-200 p-[10px] text-xl leading-none shadow-[0_0_0_1px] shadow-gray-400 outline-none selection:bg-blue-100 focus:ring-2 focus:ring-blue-500"
+                  className="selection:color-black box-border inline-flex h-[50px] w-full resize-none appearance-none items-center justify-center rounded-xl border-blue-200 p-[10px] text-xl leading-none shadow-[0_0_0_1.2px] shadow-gray-400 outline-none selection:bg-blue-100 focus:ring-2 focus:ring-blue-500"
                 />
               </Form.Control>
             </Form.Field>
@@ -153,25 +167,35 @@ const RepoPage = () => {
                 <input
                   type="file"
                   required
-                  className="selection:color-black inline-flex h-[50px] w-full resize-none appearance-none items-center justify-center p-[10px] text-xl leading-none outline-none selection:bg-blue-100 file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:font-medium file:text-blue-600 file:transition-colors file:hover:bg-blue-100 focus:ring-2 focus:ring-blue-500"
+                  className="selection:color-black inline-flex h-[50px] w-full resize-none appearance-none items-center justify-center p-[10px] text-base leading-none outline-none selection:bg-blue-100 file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:font-medium file:text-blue-600 file:transition-colors file:hover:bg-blue-100 focus:ring-2 focus:ring-blue-500"
                 />
               </Form.Control>
             </Form.Field>
             {pctUploaded > 0 ? (
               pctUploaded < 100 ? (
                 <span className="rounded-full bg-blue-100 p-3 text-blue-500">
-                  Uploading
+                  Uploading...
                 </span>
               ) : (
-                <span className="flex w-max items-center justify-center gap-2 rounded-full bg-green-100 p-3 py-2 text-sm font-medium text-green-500">
+                <span className="flex w-max items-center justify-center gap-2 rounded-full bg-green-100 p-2 py-1 text-sm font-medium text-green-500">
                   <Check />
                   Image Uploaded to IPFS
                 </span>
               )
             ) : null}
-
+            <span className="inset-2 rounded-lg bg-gray-100 px-2 py-1">
+              Connect your wallet and sign this message
+            </span>
+            <button
+              disabled={isLoading || isSuccess}
+              onClick={handleSignMessage}
+              className="cursor-default self-start rounded-3xl bg-blue-50 px-3 py-1 font-medium text-blue-500 transition-colors hover:bg-blue-100 disabled:pointer-events-none"
+            >
+              {isSuccess ? "Message Signed" : "Sign Message"}
+            </button>
             <Form.Submit asChild>
               <button
+                type="submit"
                 disabled={isUploading}
                 className="group flex cursor-pointer items-center justify-center gap-2 self-end rounded-3xl bg-blue-600 px-5 py-3 text-xl font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50"
               >
