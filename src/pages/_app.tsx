@@ -3,7 +3,7 @@ import "~/styles/globals.css";
 import { bespokeStencil, supremeFont } from "~/fonts/setup";
 import { DialogRoot } from "~/components/dialog/dialogRoot";
 import { useEffect, useRef, useState } from "react";
-import { Toaster } from "sonner";
+import { Toaster } from "react-hot-toast";
 import { WagmiProvider } from "~/lib/wagmi/wagmiProvider";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
