@@ -53,7 +53,6 @@ const Home: NextPage = () => {
     clearCache();
     void router.replace("/home", undefined, { shallow: true });
     void router.push("/");
-    toast.success("Logged out successfully!", { duration: 2000 });
   };
 
   return (
