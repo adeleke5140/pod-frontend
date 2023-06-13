@@ -4,6 +4,7 @@ import { bespokeStencil, supremeFont } from "~/fonts/setup";
 import { DialogRoot } from "~/components/dialog/dialogRoot";
 import { useEffect, useRef, useState } from "react";
 import { Toaster } from "sonner";
+import { WagmiProvider } from "~/lib/wagmi/wagmiProvider";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
@@ -13,7 +14,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   }, []);
 
   return (
-    <>
+    <WagmiProvider>
       <div
         ref={containerRef}
         className={`${bespokeStencil.variable} ${supremeFont.variable}`}
@@ -22,7 +23,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         <DialogRoot container={container} />
         <Component {...pageProps} />
       </div>
-    </>
+    </WagmiProvider>
   );
 };
 
