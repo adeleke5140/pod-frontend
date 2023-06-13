@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { uploadPOD } from "~/lib/web3.storage/uploadPOD";
 import { Spinner } from "~/components/spinner";
 import { toast } from "sonner";
+import { ConnectKitButton } from "connectkit";
 
 interface Data {
   "contributions-required": string;
@@ -55,35 +56,30 @@ const RepoPage = () => {
   return (
     <Layout>
       <div className="mx-auto flex max-w-xl flex-col gap-8 pb-8 text-left">
-        <button
-          onClick={navigateToAll}
-          className="w-max rounded-b-lg p-1 shadow transition-shadow ease-linear hover:shadow-md"
-        >
-          All repos
-        </button>
+        <div className="flex items-center justify-between font-supreme">
+          <button
+            onClick={navigateToAll}
+            className="w-max rounded-b-lg p-1 shadow transition-shadow ease-linear hover:shadow-md"
+          >
+            All repos
+          </button>
+          <ConnectKitButton label="Connect Wallet" theme="soft" />
+        </div>
         <h1 className="mb-6 font-bespoke text-7xl font-bold">
           Create a <span className="text-blue-500">POD</span>
         </h1>
         <div>
           <h2>
-            <span className="text-xl font-medium opacity-50">Repo:</span>
-            <span className="text-xl"> {repo?.name}</span>
+            <span className="font-medium opacity-50">Repo:</span>
+            <span className=""> {repo?.name}</span>
           </h2>
           <p>
-            <span className="text-xl font-medium opacity-50">Description:</span>{" "}
-            <span className=" text-xl">
-              {" "}
-              {repo?.description || "No Description"}
-            </span>
+            <span className="font-medium opacity-50">Description:</span>{" "}
+            <span className=""> {repo?.description || "No Description"}</span>
           </p>
         </div>
 
         <div className="">
-          <p className="mb-4 text-blue-500">
-            Tip: You need to fill in the name of the POD, the minimum
-            contribution developer would have to make, a max supply and an image
-            of the POD.
-          </p>
           <Form.Root
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onSubmit={handleCreatePOD}
@@ -92,26 +88,16 @@ const RepoPage = () => {
             <Form.Field className="mb-[10px] grid" name="name">
               <div className="flex items-baseline justify-between">
                 <Form.Label className="text-[15px] font-medium leading-[35px]">
-                  Name
+                  Project Name
                 </Form.Label>
-                <Form.Message
-                  className="text-[13px] text-red-500 opacity-[0.9]"
-                  match="valueMissing"
-                >
-                  Please enter the name of the POD
-                </Form.Message>
-                <Form.Message
-                  className="text-[13px] text-red-500 opacity-[0.9]"
-                  match="typeMismatch"
-                >
-                  Please provide a valid name
-                </Form.Message>
               </div>
               <Form.Control asChild>
                 <input
                   className="selection:color-white box-border inline-flex h-[50px] w-full appearance-none items-center justify-center rounded-[4px] px-[10px] text-xl leading-none shadow-[0_0_0_1px] shadow-gray-400 outline-none selection:bg-blue-100 focus:ring-2 focus:ring-blue-600"
                   type="text"
                   required
+                  readOnly
+                  value={repo?.name}
                 />
               </Form.Control>
             </Form.Field>
@@ -183,6 +169,7 @@ const RepoPage = () => {
                 </span>
               )
             ) : null}
+
             <Form.Submit asChild>
               <button
                 disabled={isUploading}
