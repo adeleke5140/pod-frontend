@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import Layout from "~/components/layouts";
-import { useAccessToken, useRepos } from "~/lib/zustand/codeSlice";
+import { useAccessToken, useRepos, useUserId } from "~/lib/zustand/codeSlice";
 import * as Form from "@radix-ui/react-form";
 import { ArrowRight, Check } from "react-feather";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import { Spinner } from "~/components/spinner";
 import { toast } from "react-hot-toast";
 import { ConnectKitButton } from "connectkit";
 import { useSignMessage } from "wagmi";
+import { usePodActions } from "~/lib/zustand/podSlice";
 
 interface Data {
   "contributions-required": string;
@@ -18,16 +19,24 @@ interface Data {
 }
 
 const RepoPage = () => {
-  const repos = useRepos();
-  const token = useAccessToken();
-  const router = useRouter();
-  const { id: name } = router.query;
-  const code = router.query.code;
   const [pctUploaded, setPctUploaded] = useState(0);
   const [cid, setCid] = useState("");
   const [isUploading, setIsUploading] = useState(false);
-  const repo = repos.filter((repo) => repo.name === name)[0];
   const [signedMessage, setSignedMessage] = useState<unknown>("");
+
+  //from zustand
+  const repos = useRepos();
+  const token = useAccessToken();
+  const userId = useUserId();
+  const { setPodDetails, createPod } = usePodActions();
+
+  //get repo
+  const router = useRouter();
+  const { id: name } = router.query;
+  const code = router.query.code;
+  const repo = repos.filter((repo) => repo.name === name)[0];
+
+  //singning messsage
   const { data, isError, isLoading, isSuccess, signMessage } = useSignMessage({
     message: "Sign this message to verify your identity",
   });
@@ -56,16 +65,41 @@ const RepoPage = () => {
 
   async function handleCreatePOD(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
     setIsUploading(true);
     const data = Object.fromEntries(
       new FormData(e.currentTarget)
     ) as unknown as Data;
+
     const { cid, pct } = await uploadPOD([data.images]);
     await new Promise((resolve) => setTimeout(resolve, 1000));
+
     setPctUploaded(pct);
     setCid(cid);
     setIsUploading(false);
-    toast.success("POD Created Successfully");
+
+    if (!userId) return toast.error("Your ID is absent, cannot create POD");
+
+    console.log({
+      userId,
+    });
+    const podData = {
+      userId,
+      nftUri: cid,
+      signature: signedMessage,
+      projectName: data.name,
+      minContributions: Number(data["contributions-required"]),
+    };
+
+    setPodDetails(podData);
+    //try catch seems to be irrelevant here
+    try {
+      await createPod();
+      toast.success("POD Created Successfully");
+    } catch (err) {
+      toast.error("Error creating POD");
+      console.error(err);
+    }
   }
   return (
     <Layout>
@@ -133,6 +167,7 @@ const RepoPage = () => {
               <Form.Control asChild>
                 <input
                   type="number"
+                  min={1}
                   className="selection:color-black box-border inline-flex h-[50px] w-full resize-none appearance-none items-center justify-center rounded-xl p-[10px] text-xl leading-none shadow-[0_0_0_1.2px] shadow-gray-400 outline-none selection:bg-blue-100  focus:ring-2 focus:ring-blue-500"
                   required
                 />
@@ -147,6 +182,7 @@ const RepoPage = () => {
               <Form.Control asChild>
                 <input
                   type="number"
+                  min={0}
                   className="selection:color-black box-border inline-flex h-[50px] w-full resize-none appearance-none items-center justify-center rounded-xl border-blue-200 p-[10px] text-xl leading-none shadow-[0_0_0_1.2px] shadow-gray-400 outline-none selection:bg-blue-100 focus:ring-2 focus:ring-blue-500"
                 />
               </Form.Control>
@@ -187,6 +223,7 @@ const RepoPage = () => {
               Connect your wallet and sign this message
             </span>
             <button
+              type="button"
               disabled={isLoading || isSuccess}
               onClick={handleSignMessage}
               className="cursor-default self-start rounded-3xl bg-blue-50 px-3 py-1 font-medium text-blue-500 transition-colors hover:bg-blue-100 disabled:pointer-events-none"
