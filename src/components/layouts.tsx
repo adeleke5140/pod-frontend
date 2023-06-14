@@ -16,6 +16,14 @@ function Layout({ children }: LayoutProps) {
         <ul className="flex gap-2">
           <li>
             <Link
+              href="/how-it-works"
+              className="cursor-pointer rounded-lg p-1 px-2 transition-colors hover:bg-slate-200 "
+            >
+              How it works
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/about"
               className="cursor-pointer rounded-lg p-1 px-2 transition-colors hover:bg-slate-200 "
             >
@@ -64,7 +72,7 @@ function Layout({ children }: LayoutProps) {
         </div>
       </main>
       <footer className="mt-auto flex w-full items-center justify-center gap-2 divide-y">
-        <span>©EthGlobal 2023.</span>
+        <span>EthGlobal | HackFS 2023</span>
         <span>
           backend and contract by{" "}
           <a href="" className="text-blue-600">
