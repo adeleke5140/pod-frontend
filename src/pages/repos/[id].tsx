@@ -241,7 +241,7 @@ const RepoPage = () => {
                     <Spinner size="sm" /> <span>Creating...</span>
                   </>
                 ) : (
-                  <span>Create POD</span>
+                  <span>Request Approval</span>
                 )}
                 {!isUploading ? (
                   <ArrowRight className="transition-transform group-hover:translate-x-1" />
