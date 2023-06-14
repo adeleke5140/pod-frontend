@@ -1,5 +1,4 @@
-import { configureChains, createConfig } from "wagmi";
-import { publicProvider } from "wagmi/providers/public";
+import { createConfig } from "wagmi";
 import { filecoinCalibration } from "wagmi/chains";
 import { getDefaultConfig } from "connectkit";
 import { walletConnectId } from "~/constants";
