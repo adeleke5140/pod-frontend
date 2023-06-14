@@ -1,17 +1,25 @@
 import type { AppProps } from "next/app";
-import "~/styles/globals.css";
-import { bespokeStencil, supremeFont } from "~/fonts/setup";
-import { DialogRoot } from "~/components/dialog/dialogRoot";
 import { useEffect, useRef, useState } from "react";
 import { Toaster } from "react-hot-toast";
+import { DialogRoot } from "~/components/dialog/dialogRoot";
+import { bespokeStencil, supremeFont } from "~/fonts/setup";
 import { WagmiProvider } from "~/lib/wagmi/wagmiProvider";
+import "~/styles/globals.css";
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
+interface ProtectedAppProps extends AppProps {
+  pageProps: {
+    protected?: boolean
+  }
+}
+
+const MyApp = ({ Component, pageProps }: ProtectedAppProps) => {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (containerRef.current) setContainer(containerRef.current);
   }, []);
+
 
   return (
     <WagmiProvider>
