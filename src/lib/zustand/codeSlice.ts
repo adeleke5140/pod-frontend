@@ -3,6 +3,7 @@ import axios from "axios";
 import { githubCallbackURL, githubRepoURL } from "~/constants";
 
 interface AuthState {
+  userId: string;
   loading: boolean;
   code: string;
   access_token: string;
@@ -23,7 +24,7 @@ interface UserDataServerResponse {
 interface UserData {
   token: string;
   user: unknown;
-  userID: unknown;
+  userId: string;
 }
 
 interface UserRepoServerResponse {
@@ -47,7 +48,8 @@ interface UserRepoData {
   publicRepos: UserRepo[];
 }
 
-const useAuthStore = create<AuthState>((set, get) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
+  userId: "",
   loading: false,
   code: "",
   access_token: "",
@@ -88,6 +90,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
         console.log(cache);
         set((state) => ({ ...state, loading: false }));
         set((state) => ({ ...state, access_token: data.data.token }));
+        set((state) => ({ ...state, userId: data.data.userId }));
         console.log("fetched access_token", data.data);
       } catch (e) {
         set((state) => ({ ...state, loading: false }));
@@ -130,6 +133,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
 }));
 
 export const useCode = () => useAuthStore((state) => state.code);
+export const useUserId = () => useAuthStore((state) => state.userId);
 export const useAccessToken = () => useAuthStore((state) => state.access_token);
 export const useAuthActions = () => useAuthStore((state) => state.actions);
 export const useRepos = () => useAuthStore((state) => state.repos);
