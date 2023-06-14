@@ -41,7 +41,7 @@ export const usePodSlice = create<PodState>()((set, get) => ({
         const { data } = await axios.post<PodCreationServerResponse>(
           requestProjectApprovalURL,
           {
-            podDetails,
+            ...podDetails,
           },
           {
             headers: {
