@@ -1,7 +1,6 @@
 import { redirectURL } from "~/constants";
 import { ArrowRight } from "react-feather";
 import { DialogCloseButton } from "../dialog/dialogCloseButton";
-console.log(redirectURL);
 
 export const SignupModal = () => {
   return (
