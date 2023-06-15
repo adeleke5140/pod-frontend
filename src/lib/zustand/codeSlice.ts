@@ -1,11 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 import { githubCallbackURL, githubRepoURL } from "~/constants";
-import { persist, createJSONStorage } from "zustand/middleware";
-import {
-  getFromLocalStorage,
-  saveToLocalStorage,
-} from "../localStorage/localStorage";
+import * as middleware from "zustand/middleware";
 
 interface AuthState {
   userId: string;
@@ -54,7 +50,7 @@ interface UserRepoData {
 }
 
 export const useAuthStore = create<AuthState>()(
-  persist(
+  middleware.persist(
     (set, get) => ({
       userId: "",
       loading: false,
@@ -64,7 +60,6 @@ export const useAuthStore = create<AuthState>()(
       cache: {},
       actions: {
         setCode: (code: string) => set((state) => ({ ...state, code })),
-
         fetchAccessToken: async () => {
           const code = get().code;
           const cache = get().cache;
@@ -140,7 +135,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: "auth-storage",
-      storage: createJSONStorage(() => localStorage),
+      storage: middleware.createJSONStorage(() => localStorage),
       partialize: (state) => ({ access_token: state.access_token }),
     }
   )
