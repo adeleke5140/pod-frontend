@@ -13,7 +13,7 @@ const Repos = () => {
       <div className="text-left">
         <h2 className="text-3xl font-semibold">Repositories</h2>
         <p className="mb-8 text-lg">
-          Once authorized, select a repositories to associate with your POD.
+          Select a repositories to associate with your POD.
         </p>
         <div className="grid gap-5 md:grid-cols-2">
           {!repos.length && !loading && <p>No repos yet...</p>}
