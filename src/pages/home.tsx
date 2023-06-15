@@ -12,12 +12,13 @@ import {
 } from "~/lib/zustand/codeSlice";
 import { redirectURL } from "../constants";
 import Link from "next/link";
+import { useAuthStore } from "~/lib/zustand/codeSlice";
 
 const Home: NextPage = () => {
   const router = useRouter();
   const code = useCode();
   const token = useAccessToken();
-  const { setCode, fetchAccessToken, fetchRepos, clearCache } =
+  const { setCode, fetchAccessToken, fetchRepos, logout } =
     useAuthActions();
 
   const isLoggedIn = useMemo(() => !!code || !!token, [token, code]);
@@ -57,7 +58,8 @@ const Home: NextPage = () => {
   }, [token, fetchRepos]);
 
   const clearCode = () => {
-    clearCache();
+    logout();
+    useAuthStore.persist.clearStorage()
     void router.replace("/home", undefined, { shallow: true });
     void router.push("/");
   };
@@ -81,7 +83,7 @@ const Home: NextPage = () => {
                 className={`${
                   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                   code ? "pointer-events-none" : null
-                } text-md group flex cursor-pointer gap-2 self-start rounded-3xl bg-blue-600 px-5 py-3 font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:opacity-50`}
+                  } text-md group flex cursor-pointer gap-2 self-start rounded-3xl bg-blue-600 px-5 py-3 font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:opacity-50`}
               >
                 Authorized
                 <UserCheck />
