@@ -3,7 +3,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { UserCheck } from "react-feather";
-import { toast } from "react-hot-toast";
 import Layout from "~/components/layouts";
 import { Repos } from "~/components/repos";
 import {
