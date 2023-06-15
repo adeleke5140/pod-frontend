@@ -12,7 +12,10 @@ import {
 } from "~/lib/zustand/codeSlice";
 import { redirectURL } from "../constants";
 import Link from "next/link";
+<<<<<<< HEAD
 import { useAuthStore } from "~/lib/zustand/codeSlice";
+=======
+>>>>>>> 50d50fe (fix: repo list issue)
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -83,7 +86,7 @@ const Home: NextPage = () => {
                 className={`${
                   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                   code ? "pointer-events-none" : null
-                  } text-md group flex cursor-pointer gap-2 self-start rounded-3xl bg-blue-600 px-5 py-3 font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:opacity-50`}
+                } text-md group flex cursor-pointer gap-2 self-start rounded-3xl bg-blue-600 px-5 py-3 font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:opacity-50`}
               >
                 Authorized
                 <UserCheck />
