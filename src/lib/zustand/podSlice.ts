@@ -5,6 +5,9 @@ import type { CIDString } from "web3.storage";
 import { useAuthStore } from "./codeSlice";
 
 interface PodState {
+  podCreationSuccess: boolean
+  podCreationFailure: boolean
+  podCreationProjectHash: string
   podDetails: {
     userId: string;
     projectName: string;
@@ -21,12 +24,18 @@ interface PodState {
 interface PodCreationServerResponse {
   data: {
     success: boolean;
-    data: unknown;
+    data: {
+      projectHash: string;
+      transactionHash: string;
+    }
     message: string;
   };
 }
 
 export const usePodSlice = create<PodState>()((set, get) => ({
+  podCreationSuccess: true,
+  podCreationFailure: false,
+  podCreationProjectHash: "",
   podDetails: null,
   actions: {
     setPodDetails: (podDetails) => set({ podDetails }),
@@ -51,9 +60,12 @@ export const usePodSlice = create<PodState>()((set, get) => ({
           }
         );
         if (data.data.success) {
+          set((state) => ({ ...state, podCreationSuccess: true }))
+          set((state) => ({ ...state, podCreationProjectHash: data.data.data.projectHash }))
           console.log("pod created🎉");
           console.log(data);
         } else {
+          set((state) => ({ ...state, podCreationFailure: true }))
           console.log("pod creation failed👎");
           console.log(data);
           throw new Error("pod creation failed");
@@ -66,3 +78,5 @@ export const usePodSlice = create<PodState>()((set, get) => ({
 }));
 
 export const usePodActions = () => usePodSlice((state) => state.actions);
+export const usePodCreationSuccess = () => usePodSlice((state) => state.podCreationSuccess);
+export const usePodCreationFailure = () => usePodSlice((state) => state.podCreationFailure);
