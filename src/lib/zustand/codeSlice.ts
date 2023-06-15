@@ -14,7 +14,7 @@ interface AuthState {
     setCode: (code: string) => void;
     fetchAccessToken: () => Promise<void>;
     fetchRepos: () => Promise<void>;
-    clearCache: () => void;
+    logout: () => void;
   };
 }
 
@@ -128,8 +128,9 @@ export const useAuthStore = create<AuthState>()(
             console.log(e);
           }
         },
-        clearCache: () => {
+        logout: () => {
           set((state) => ({ ...state, cache: {} }));
+          set((state) => ({ ...state, access_token: '' }))
         },
       },
     }),
