@@ -1,15 +1,16 @@
-import { useRouter } from "next/router";
-import Layout from "~/components/layouts";
-import { useAccessToken, useRepos, useUserId } from "~/lib/zustand/codeSlice";
 import * as Form from "@radix-ui/react-form";
-import { ArrowRight, Check } from "react-feather";
-import { useEffect, useState } from "react";
-import { uploadPOD } from "~/lib/web3.storage/uploadPOD";
-import { Spinner } from "~/components/spinner";
-import { toast } from "react-hot-toast";
 import { ConnectKitButton } from "connectkit";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { ArrowRight, Check } from "react-feather";
+import { toast } from "react-hot-toast";
 import { useSignMessage } from "wagmi";
-import { usePodActions } from "~/lib/zustand/podSlice";
+import Layout from "~/components/layouts";
+import { Spinner } from "~/components/spinner";
+import { uploadPOD } from "~/lib/web3.storage/uploadPOD";
+import { useAccessToken, useRepos, useUserId } from "~/lib/zustand/codeSlice";
+import { usePodActions, usePodCreationFailure, usePodCreationSuccess } from "~/lib/zustand/podSlice";
+import { PodDetailsTrigger } from "~/components/podDetails/podTrigger";
 
 interface Data {
   "contributions-required": string;
@@ -29,6 +30,8 @@ const RepoPage = () => {
   const token = useAccessToken();
   const userId = useUserId();
   const { setPodDetails, createPod } = usePodActions();
+  const podCreationSuccess = usePodCreationSuccess()
+  const podCreationFailure = usePodCreationFailure()
 
   //get repo
   const router = useRouter();
@@ -93,13 +96,24 @@ const RepoPage = () => {
 
     setPodDetails(podData);
     //try catch seems to be irrelevant here
-    try {
-      await createPod();
+
+    await createPod();
+
+    if (podCreationSuccess) {
       toast.success("POD Created Successfully");
-    } catch (err) {
-      toast.error("Error creating POD");
-      console.error(err);
     }
+
+    if (podCreationFailure) {
+      toast.error("POD Creation Failed, try again");
+    }
+
+  }
+
+  function showPodDetails() {
+    PodDetailsTrigger.show({
+      link: 'ken',
+      tHash: 'ken'
+    })
   }
   return (
     <Layout>
@@ -222,6 +236,7 @@ const RepoPage = () => {
             <span className="inset-2 rounded-lg bg-gray-100 px-2 py-1">
               Connect your wallet and sign this message
             </span>
+
             <button
               type="button"
               disabled={isLoading || isSuccess}
@@ -230,24 +245,29 @@ const RepoPage = () => {
             >
               {isSuccess ? "Message Signed" : "Sign Message"}
             </button>
-            <Form.Submit asChild>
-              <button
-                type="submit"
-                disabled={isUploading}
-                className="group flex cursor-pointer items-center justify-center gap-2 self-end rounded-3xl bg-blue-600 px-5 py-3 text-xl font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50"
-              >
-                {isUploading ? (
-                  <>
-                    <Spinner size="sm" /> <span>Creating...</span>
-                  </>
-                ) : (
-                  <span>Request Approval</span>
-                )}
-                {!isUploading ? (
-                  <ArrowRight className="transition-transform group-hover:translate-x-1" />
-                ) : null}
-              </button>
-            </Form.Submit>
+
+            {podCreationSuccess ?
+              <button onClick={showPodDetails} className="group flex cursor-pointer items-center justify-center gap-2 self-end rounded-3xl bg-blue-600 px-5 py-3 text-xl font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50">
+                View POD
+              </button> :
+              <Form.Submit asChild>
+                <button
+                  type="submit"
+                  disabled={isUploading}
+                  className="group flex cursor-pointer items-center justify-center gap-2 self-end rounded-3xl bg-blue-600 px-5 py-3 text-xl font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50"
+                >
+                  {isUploading ? (
+                    <>
+                      <Spinner size="sm" /> <span>Creating...</span>
+                    </>
+                  ) : (
+                    <span>Request Approval</span>
+                  )}
+                  {!isUploading ? (
+                    <ArrowRight className="transition-transform group-hover:translate-x-1" />
+                  ) : null}
+                </button>
+              </Form.Submit>}
           </Form.Root>
         </div>
       </div>
