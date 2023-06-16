@@ -21,12 +21,10 @@ interface MintState {
 }
 
 interface MintEligibilityServerResponse {
+  success: boolean;
   data: {
-    success: boolean;
-    data: {
-      isAllowedToMint: boolean;
-      transactionHash: string;
-    }
+    isAllowedToMint: boolean;
+    transactionHash: string;
   }
 }
 
@@ -56,10 +54,10 @@ export const useMintSlice = create<MintState>()(
               code,
               account: walletAddress
             })
-            if (data.data.success) {
+            if (data.success) {
               stopLoading()
-              set((state) => ({ ...state, mintEligibility: data.data.data.isAllowedToMint }))
-              set((state) => ({ ...state, transactionHash: data.data.data.transactionHash }))
+              // set((state) => ({ ...state, mintEligibility: data.data.isAllowedToMint }))
+              // set((state) => ({ ...state, transactionHash: data.data.transactionHash }))
               set((state) => ({ ...state, pHash: "" }))
               console.log('Allowed to mint', "✅")
             } else {
