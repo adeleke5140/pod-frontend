@@ -22,7 +22,8 @@ const MintPage = () => {
   const chains = useChains()
   const projectHash = useProjectHash()
   console.log({
-    projectHash
+    projectHash,
+    redirectMintURL
   })
 
   useEffect(() => {
@@ -47,14 +48,6 @@ const MintPage = () => {
     }
   }, [mintEligibility])
 
-  // async function resolveEnsName(data: string) {
-  //   const address = await viemClient.getEnsResolver(
-  //     { name: normalize(data) }
-  //   )
-  //   console.log(address)
-  //   return address
-  // }
-
 
   async function handleMint(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -69,8 +62,7 @@ const MintPage = () => {
     } else {
       setWalletAddress(data['wallet-address'])
     }
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    // await checkMintEligibility()
+    await checkMintEligibility()
   }
 
   return (
