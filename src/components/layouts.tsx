@@ -34,6 +34,9 @@ function Layout({ children }: LayoutProps) {
             </Link>
           </li>
         </ul> : null}
+        {
+          router.route === '/mint' ? <a className="text-sm underline text-blue-500 font-medium" target="_blank" rel="noopener noreferrer" href="https://chainlist.org/?search=fil&testnets=true">Add Filecoin testnet to metamask</a> : null
+        }
       </nav>
       <main>
         <div className="relative isolate z-10">
