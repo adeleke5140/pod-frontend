@@ -24,7 +24,7 @@ const HomeStuff = ({ isLoggedIn }: HomeStuffPropsType) => {
   const code = useCode();
   const token = useAccessToken();
   const { setCode, fetchAccessToken, fetchRepos, logout } = useAuthActions();
-
+  console.log("token", token);
   useEffect(() => {
     let isMounted = true;
     const URLcode = router.query.code;
@@ -52,6 +52,7 @@ const HomeStuff = ({ isLoggedIn }: HomeStuffPropsType) => {
 
   useEffect(() => {
     let isMounted = true;
+    if (!token) return
     if (isMounted) {
       token && void fetchRepos();
     }
@@ -80,7 +81,7 @@ const HomeStuff = ({ isLoggedIn }: HomeStuffPropsType) => {
               className={`${
                 // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                 code ? "pointer-events-none" : null
-              } text-md group flex cursor-pointer gap-2 self-start rounded-3xl bg-blue-600 px-5 py-3 font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:opacity-50`}
+                } text-md group flex cursor-pointer gap-2 self-start rounded-3xl bg-blue-600 px-5 py-3 font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:opacity-50`}
             >
               Authorized
               <UserCheck />
