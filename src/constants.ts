@@ -8,6 +8,7 @@ export const githubRepoURL =
   "http://localhost:3058/user/v1-get-public-repos-by-user";
 export const requestProjectApprovalURL =
   "http://localhost:3058/user/v1-request-project-approval";
+export const domain = process.env.NEXT_PUBLIC_DOMAIN as string;
 export const web3StorageToken = process.env.NEXT_PUBLIC_WEB3STORAGE_TOKEN;
 export const walletConnectId = process.env
   .NEXT_PUBLIC_WALLET_CONNECT_ID as string;
