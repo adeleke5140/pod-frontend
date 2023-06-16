@@ -50,6 +50,7 @@ const MintPage = () => {
       new FormData(e.currentTarget)
     ) as unknown as string
 
+
     setWalletAddress(data)
     await checkMintEligibility()
   }
