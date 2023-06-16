@@ -8,9 +8,10 @@ import { useSignMessage } from "wagmi";
 import Layout from "~/components/layouts";
 import { Spinner } from "~/components/spinner";
 import { uploadPOD } from "~/lib/web3.storage/uploadPOD";
-import { useAccessToken, useRepos, useUserId } from "~/lib/zustand/codeSlice";
-import { usePodActions, usePodCreationFailure, usePodCreationSuccess } from "~/lib/zustand/podSlice";
+import { useAccessToken, useRepos } from "~/lib/zustand/codeSlice";
+import { useIsCreatingPod, usePodActions, usePodCreationDetails, usePodCreationFailure, usePodCreationSuccess } from "~/lib/zustand/podSlice";
 import { PodDetailsTrigger } from "~/components/podDetails/podTrigger";
+import { domain } from "~/constants";
 
 interface Data {
   "contributions-required": string;
@@ -22,16 +23,16 @@ interface Data {
 const RepoPage = () => {
   const [pctUploaded, setPctUploaded] = useState(0);
   const [cid, setCid] = useState("");
-  const [isUploading, setIsUploading] = useState(false);
   const [signedMessage, setSignedMessage] = useState<unknown>("");
 
   //from zustand
   const repos = useRepos();
   const token = useAccessToken();
-  const userId = useUserId();
-  const { setPodDetails, createPod } = usePodActions();
+  const { setPodDetails, createPod, startLoading, stopLoading } = usePodActions();
   const podCreationSuccess = usePodCreationSuccess()
   const podCreationFailure = usePodCreationFailure()
+  const podCreationDetails = usePodCreationDetails()
+  const loading = useIsCreatingPod()
 
   //get repo
   const router = useRouter();
@@ -57,6 +58,18 @@ const RepoPage = () => {
     }
   });
 
+  useEffect(() => {
+    if (podCreationFailure) {
+      toast.error("POD Creation Failed, try again");
+    }
+  }, [podCreationFailure])
+
+  useEffect(() => {
+    if (podCreationSuccess) {
+      toast.success("POD Created Successfully");
+    }
+  }, [podCreationSuccess])
+
   function handleSignMessage() {
     signMessage();
   }
@@ -69,25 +82,17 @@ const RepoPage = () => {
   async function handleCreatePOD(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    setIsUploading(true);
     const data = Object.fromEntries(
       new FormData(e.currentTarget)
     ) as unknown as Data;
 
+    startLoading()
     const { cid, pct } = await uploadPOD([data.images]);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     setPctUploaded(pct);
     setCid(cid);
-    setIsUploading(false);
 
-    if (!userId) return toast.error("Your ID is absent, cannot create POD");
-
-    console.log({
-      userId,
-    });
     const podData = {
-      userId,
       nftUri: cid,
       signature: signedMessage,
       projectName: data.name,
@@ -95,24 +100,14 @@ const RepoPage = () => {
     };
 
     setPodDetails(podData);
-    //try catch seems to be irrelevant here
-
     await createPod();
-
-    if (podCreationSuccess) {
-      toast.success("POD Created Successfully");
-    }
-
-    if (podCreationFailure) {
-      toast.error("POD Creation Failed, try again");
-    }
-
   }
 
   function showPodDetails() {
+    const link = `${domain}/mint?pHash=${podCreationDetails.pHash}`
     PodDetailsTrigger.show({
-      link: 'ken',
-      tHash: 'ken'
+      link: link,
+      tHash: podCreationDetails.tHash,
     })
   }
   return (
@@ -253,17 +248,17 @@ const RepoPage = () => {
               <Form.Submit asChild>
                 <button
                   type="submit"
-                  disabled={isUploading}
+                  disabled={loading}
                   className="group flex cursor-pointer items-center justify-center gap-2 self-end rounded-3xl bg-blue-600 px-5 py-3 text-xl font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50"
                 >
-                  {isUploading ? (
+                  {loading ? (
                     <>
                       <Spinner size="sm" /> <span>Creating...</span>
                     </>
                   ) : (
-                    <span>Request Approval</span>
+                    <span>Create Pod</span>
                   )}
-                  {!isUploading ? (
+                  {!loading ? (
                     <ArrowRight className="transition-transform group-hover:translate-x-1" />
                   ) : null}
                 </button>
