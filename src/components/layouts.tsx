@@ -1,9 +1,12 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 function Layout({ children }: LayoutProps) {
+  const router = useRouter()
+  const showNavInfo = router.asPath === '/' || router.asPath === '/about' || router.asPath === '/how-it-works' || router.asPath === '/create' || router.asPath === '/how-it-works'
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-b from-blue-50 via-transparent to-transparent px-4 font-supreme md:px-8">
       <nav className="relative z-20 mx-auto my-0 flex w-full max-w-6xl justify-between pt-4 text-lg">
@@ -13,7 +16,7 @@ function Layout({ children }: LayoutProps) {
         >
           POD
         </Link>
-        <ul className="flex gap-2">
+        {showNavInfo ? <ul className="flex gap-2">
           <li>
             <Link
               href="/how-it-works"
@@ -30,7 +33,7 @@ function Layout({ children }: LayoutProps) {
               About
             </Link>
           </li>
-        </ul>
+        </ul> : null}
       </nav>
       <main>
         <div className="relative isolate z-10">
