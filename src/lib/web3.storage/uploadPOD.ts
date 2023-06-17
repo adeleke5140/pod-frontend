@@ -34,6 +34,7 @@ export const uploadPOD = async (files: File[]) => {
     name: "POD",
     onRootCidReady,
     onStoredChunk,
+    wrapWithDirectory: false,
   });
   console.log(cid);
   return { cid, pct };
