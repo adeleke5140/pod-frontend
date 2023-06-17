@@ -9,7 +9,11 @@ import Layout from "~/components/layouts";
 import { Spinner } from "~/components/spinner";
 import { uploadPOD } from "~/lib/web3.storage/uploadPOD";
 import { useAccessToken, useRepos } from "~/lib/zustand/codeSlice";
-import { useIsCreatingPod, usePodActions, usePodCreationDetails } from "~/lib/zustand/podSlice";
+import {
+  useIsCreatingPod,
+  usePodActions,
+  usePodCreationDetails,
+} from "~/lib/zustand/podSlice";
 import { PodDetailsTrigger } from "~/components/podDetails/podTrigger";
 import { domain } from "~/constants";
 
@@ -24,13 +28,15 @@ const RepoPage = () => {
   const [pctUploaded, setPctUploaded] = useState(0);
   const [cid, setCid] = useState("");
   const [signedMessage, setSignedMessage] = useState<unknown>("");
+  const [podCreationSuccess, setPodCreationSuccess] = useState(false);
 
   //from zustand
   const repos = useRepos();
   const token = useAccessToken();
-  const { setPodDetails, createPod, startLoading, stopLoading } = usePodActions();
-  const podCreationDetails = usePodCreationDetails()
-  const loading = useIsCreatingPod()
+  const { setPodDetails, createPod, startLoading, stopLoading } =
+    usePodActions();
+  const podCreationDetails = usePodCreationDetails();
+  const loading = useIsCreatingPod();
 
   //get repo
   const router = useRouter();
@@ -56,7 +62,6 @@ const RepoPage = () => {
     }
   });
 
-
   function handleSignMessage() {
     signMessage();
   }
@@ -73,7 +78,7 @@ const RepoPage = () => {
       new FormData(e.currentTarget)
     ) as unknown as Data;
 
-    startLoading()
+    startLoading();
     const { cid, pct } = await uploadPOD([data.images]);
 
     setPctUploaded(pct);
@@ -89,18 +94,19 @@ const RepoPage = () => {
     setPodDetails(podData);
     const res = await createPod();
     if (res?.created) {
-      toast.success('POD created successfully')
+      toast.success("POD created successfully");
+      setPodCreationSuccess(true);
     } else {
-      toast.error('Error creating POD')
+      toast.error("Error creating POD");
     }
   }
 
   function showPodDetails() {
-    const link = `${domain}/mint?pHash=${podCreationDetails.pHash}`
+    const link = `${domain}/mint?pHash=${podCreationDetails.pHash}`;
     PodDetailsTrigger.show({
       link: link,
       tHash: podCreationDetails.tHash,
-    })
+    });
   }
   return (
     <Layout>
@@ -214,7 +220,7 @@ const RepoPage = () => {
                   Uploading...
                 </span>
               ) : (
-                <span className="flex -mt-4 w-max items-center justify-center gap-2 rounded-full bg-green-100 p-2 py-1 text-sm font-medium text-green-500">
+                <span className="-mt-4 flex w-max items-center justify-center gap-2 rounded-full bg-green-100 p-2 py-1 text-sm font-medium text-green-500">
                   <Check />
                   Image Uploaded.
                 </span>
@@ -233,10 +239,14 @@ const RepoPage = () => {
               {isSuccess ? "Message Signed" : "Sign Message"}
             </button>
 
-            {podCreationSuccess ?
-              <button onClick={showPodDetails} className="group flex cursor-pointer items-center justify-center gap-2 self-end rounded-3xl bg-blue-600 px-5 py-3 text-xl font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50">
+            {podCreationSuccess ? (
+              <button
+                onClick={showPodDetails}
+                className="group flex cursor-pointer items-center justify-center gap-2 self-end rounded-3xl bg-blue-600 px-5 py-3 text-xl font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50"
+              >
                 View POD
-              </button> :
+              </button>
+            ) : (
               <Form.Submit asChild>
                 <button
                   type="submit"
@@ -254,7 +264,8 @@ const RepoPage = () => {
                     <ArrowRight className="transition-transform group-hover:translate-x-1" />
                   ) : null}
                 </button>
-              </Form.Submit>}
+              </Form.Submit>
+            )}
           </Form.Root>
         </div>
       </div>
