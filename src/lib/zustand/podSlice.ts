@@ -3,14 +3,14 @@ import { create } from "zustand";
 import { requestProjectApprovalURL } from "~/constants";
 import type { CIDString } from "web3.storage";
 import { useAuthStore } from "./codeSlice";
+import * as middleware from "zustand/middleware";
 
 //pHash - projectHash
 //tHash - transactionHash
 
 interface PodState {
   loading: boolean;
-  podCreationSuccess: boolean
-  podCreationFailure: boolean
+  podCreation: boolean;
   podCreationDetails: {
     pHash: string;
     tHash: string
@@ -25,7 +25,7 @@ interface PodState {
     startLoading: () => void;
     stopLoading: () => void;
     setPodDetails: (podDetails: PodState["podDetails"]) => void;
-    createPod: () => Promise<void>;
+    createPod: () => Promise<{ created: boolean } | undefined>;
   };
 }
 
@@ -38,74 +38,80 @@ interface PodCreationServerResponse {
   message: string;
 }
 
-export const usePodSlice = create<PodState>()((set, get) => ({
-  loading: false,
-  podCreationSuccess: false,
-  podCreationFailure: false,
-  podCreationDetails: {
-    pHash: "",
-    tHash: ""
-  },
-  podDetails: null,
-  actions: {
-    setPodDetails: (podDetails) => set({ podDetails }),
-    startLoading: () => set((state) => ({ ...state, loading: true })),
-    stopLoading: () => set((state) => ({ ...state, loading: false })),
-    createPod: async () => {
-      const podDetails = get().podDetails;
-      const stopLoading = get().actions.stopLoading;
-      const { access_token } = useAuthStore.getState();
-      if (!podDetails) {
-        return;
-      }
-      try {
-        console.log("creating pod🚀");
-        const { data } = await axios.post<PodCreationServerResponse>(
-          requestProjectApprovalURL,
-          {
-            ...podDetails,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              token: `Bearer ${access_token}`,
-            },
+export const usePodSlice = create<PodState>()(
+  middleware.persist(
+    (set, get) => ({
+      loading: false,
+      podCreation: false,
+      podCreationDetails: {
+        pHash: "",
+        tHash: ""
+      },
+      podDetails: null,
+      actions: {
+        setPodDetails: (podDetails) => set({ podDetails }),
+        startLoading: () => set((state) => ({ ...state, loading: true })),
+        stopLoading: () => set((state) => ({ ...state, loading: false })),
+        createPod: async () => {
+          const podDetails = get().podDetails;
+          const stopLoading = get().actions.stopLoading;
+          const { access_token } = useAuthStore.getState();
+          if (!podDetails) {
+            return;
           }
-        );
-        if (data.success) {
-          stopLoading()
-          set((state) => ({ ...state, podCreationSuccess: true }))
-          set((state) => ({
-            ...state, podCreationDetails: {
-              ...state.podCreationDetails,
-              pHash: data.data.projectHash,
+          try {
+            console.log("creating pod🚀");
+            const { data } = await axios.post<PodCreationServerResponse>(
+              requestProjectApprovalURL,
+              {
+                ...podDetails,
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  token: `Bearer ${access_token}`,
+                },
+              }
+            );
+            if (data.success) {
+              stopLoading()
+              set(state => ({ ...state, podCreation: true }))
+              set((state) => ({
+                ...state, podCreationDetails: {
+                  ...state.podCreationDetails,
+                  pHash: data.data.projectHash,
+                }
+              }))
+              set((state) => ({
+                ...state, podCreationDetails: {
+                  ...state.podCreationDetails,
+                  tHash: data.data.transactionHash,
+                }
+              }))
+              console.log("pod created🎉");
+              console.log(data);
+            } else {
+              stopLoading()
+              console.log("pod creation failed👎");
+              console.log(data);
+              throw new Error("pod creation failed");
             }
-          }))
-          set((state) => ({
-            ...state, podCreationDetails: {
-              ...state.podCreationDetails,
-              tHash: data.data.transactionHash,
+
+            if (typeof data.success != 'undefined') {
+              return { created: data.success }
             }
-          }))
-          console.log("pod created🎉");
-          console.log(data);
-        } else {
-          stopLoading()
-          set((state) => ({ ...state, podCreationFailure: true }))
-          console.log("pod creation failed👎");
-          console.log(data);
-          throw new Error("pod creation failed");
-        }
-      } catch (err) {
-        stopLoading()
-        console.error("Cannot create POD", err);
-      }
-    },
-  },
-}));
+          } catch (err) {
+            stopLoading()
+            console.error("Cannot create POD", err);
+          }
+        },
+      },
+    }), {
+    name: "pod-storage",
+    storage: middleware.createJSONStorage(() => localStorage),
+    partialize: (state) => ({ projectHash: state.podCreationDetails.pHash })
+  }));
 
 export const usePodActions = () => usePodSlice((state) => state.actions);
-export const usePodCreationSuccess = () => usePodSlice((state) => state.podCreationSuccess);
-export const usePodCreationFailure = () => usePodSlice((state) => state.podCreationFailure);
 export const usePodCreationDetails = () => usePodSlice((state) => state.podCreationDetails);
 export const useIsCreatingPod = () => usePodSlice((state) => state.loading);
