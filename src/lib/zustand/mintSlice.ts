@@ -56,8 +56,8 @@ export const useMintSlice = create<MintState>()(
             })
             if (data.success) {
               stopLoading()
-              // set((state) => ({ ...state, mintEligibility: data.data.isAllowedToMint }))
-              // set((state) => ({ ...state, transactionHash: data.data.transactionHash }))
+              set((state) => ({ ...state, mintEligibility: data.data.isAllowedToMint }))
+              set((state) => ({ ...state, transactionHash: data.data.transactionHash }))
               set((state) => ({ ...state, pHash: "" }))
               console.log('Allowed to mint', "✅")
             } else {
