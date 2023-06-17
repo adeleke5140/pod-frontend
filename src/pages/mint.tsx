@@ -63,10 +63,10 @@ const MintPage = () => {
 
   return (
     <Layout>
-      <div className="flex flex-col gap-4 max-w-4xl mx-auto my-0">
+      <div className="flex flex-col gap-4 max-w-[25rem] mx-auto my-0">
         <div>
           <h1 className="font-bespoke text-7xl font-bold">Mint <span className="text-blue-500">POD</span></h1>
-          <div className="text-left mt-2">
+          <div className="text-center mt-2">
             <span className="opacity-50 text-sm">Supported Network:</span>{' '}
             {chains.map(chain => (
               <code className="bg-gray-100 text-xs inset-2 rounded-lg px-2 py-2" key={chain.id}>{chain.name}</code>
@@ -83,7 +83,7 @@ const MintPage = () => {
           </a>
             :
             <div className="font-supreme">
-              <p className="font-medum bg-blue-500 flex gap-2 font-medium items-center justify-center  text-lg rounded-lg text-white px-2 transition-colors"><User size="14px" /> Logged In</p>
+              <p className="font-medium bg-blue-100 flex gap-2 font-medium items-center justify-center  text-lg rounded-lg text-blue-500 px-2 transition-colors"><User size="14px" /> Logged In</p>
             </div>
           }
         </div>
@@ -132,7 +132,7 @@ const MintPage = () => {
         {transactionHash ?
           <div className="text-left mt-4 bg-gray-100 inset-2 rounded-lg px-4 py-2">
             <h3 className="text-sm text-blue-500 font-medium">Check out on block explorer</h3>
-            <p className="font-supreme text-base">Transaction Hash: {transactionHash}</p>
+            <p className="font-supreme text-base overflow-auto">Transaction Hash: {transactionHash}</p>
           </div>
           : null}
       </div>
