@@ -43,6 +43,8 @@ export interface UserRepo {
   stargazersCount: number;
   watchersCount: number;
   forks: number;
+  projectHash: string;
+  isAllowedMint: boolean;
 }
 interface UserRepoData {
   user: unknown;
