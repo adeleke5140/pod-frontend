@@ -8,7 +8,7 @@ import { domain } from "~/constants";
 import { useCopyToClipboard } from "usehooks-ts";
 import toast from "react-hot-toast";
 
-const Repos = () => {
+export const Repos = () => {
   const [repoDisplay, setRepoDisplay] = useState<"all" | "pod">("all");
   const repos = useRepos();
   const loading = useLoading();
@@ -18,11 +18,7 @@ const Repos = () => {
 
   function copyLink(hash: string) {
     const repo = repos.find((repo) => repo.projectHash === hash);
-<<<<<<< HEAD
-    const url = repo && `${domain}/mint?pHash=${repo?.projectHash}`;
-=======
     const url = repo && `${domain}/mint?pHash=${repo.projectHash}`;
->>>>>>> fix/repo-issu
     if (url) {
       void copy(url);
       setCopiedRepo(hash);
@@ -155,7 +151,5 @@ const Repos = () => {
         </div>
       </div>
     </>
-  );
-};
-
-export { Repos };
+  )
+}
