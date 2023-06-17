@@ -47,8 +47,8 @@ export const Repos = () => {
         <ul className="mb-4 flex gap-4">
           <button
             onClick={() => setRepoDisplay("all")}
-            className={`cursor-pointer rounded-lg bg-blue-50 px-2 py-1 font-semibold opacity-60 transition-all hover:bg-blue-100 ${repoDisplay === "all"
-              ? "bg-blue-100  text-blue-600 opacity-100"
+            className={`cursor-pointer rounded-lg bg-blue-50 px-2 py-1 font-semibold transition-all hover:bg-blue-100 ${repoDisplay === "all"
+              ? "bg-blue-100 text-blue-600 font-bold"
               : ""
               }`}
           >
@@ -56,7 +56,7 @@ export const Repos = () => {
           </button>
           <button
             onClick={() => setRepoDisplay("pod")}
-            className={`cursor-pointer rounded-lg bg-blue-50 px-2 py-1 font-semibold opacity-60 transition-all hover:bg-blue-100 ${repoDisplay === "pod"
+            className={`cursor-pointer rounded-lg bg-blue-50 px-2 py-1 font-semibold transition-all hover:bg-blue-100 ${repoDisplay === "pod"
               ? "bg-blue-100  text-blue-600 opacity-100"
               : ""
               }`}
