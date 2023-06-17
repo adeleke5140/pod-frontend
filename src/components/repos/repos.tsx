@@ -18,7 +18,11 @@ const Repos = () => {
 
   function copyLink(hash: string) {
     const repo = repos.find((repo) => repo.projectHash === hash);
+<<<<<<< HEAD
     const url = repo && `${domain}/mint?pHash=${repo?.projectHash}`;
+=======
+    const url = repo && `${domain}/mint?pHash=${repo.projectHash}`;
+>>>>>>> fix/repo-issu
     if (url) {
       void copy(url);
       setCopiedRepo(hash);

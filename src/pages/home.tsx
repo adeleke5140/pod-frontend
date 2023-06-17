@@ -1,9 +1,11 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-
 import { useMemo } from "react";
 import Layout from "~/components/layouts";
-import { useAccessToken, useCode } from "~/lib/zustand/codeSlice";
+import {
+  useAccessToken,
+  useCode,
+} from "~/lib/zustand/codeSlice";
 
 import dynamic from "next/dynamic";
 const HomeStuffDynamic = dynamic(() => import("../components/home/HomeStuff"), {
