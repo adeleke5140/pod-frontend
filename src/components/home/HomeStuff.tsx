@@ -70,7 +70,7 @@ const HomeStuff = ({ isLoggedIn }: HomeStuffPropsType) => {
     <>
       <div className="mt-16 flex flex-col gap-8 text-left">
         <h1 className="font-bespoke text-6xl font-bold">
-          {isLoggedIn ? "Welome." : "Authorize for full Access"}
+          {isLoggedIn ? "Welcome." : "Authorize for full Access"}
         </h1>
         <div className="flex gap-4 md:absolute md:right-0">
           {isLoggedIn ? (
