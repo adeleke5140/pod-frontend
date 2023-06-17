@@ -9,7 +9,7 @@ import Layout from "~/components/layouts";
 import { Spinner } from "~/components/spinner";
 import { uploadPOD } from "~/lib/web3.storage/uploadPOD";
 import { useAccessToken, useRepos } from "~/lib/zustand/codeSlice";
-import { useIsCreatingPod, usePodActions, usePodCreationDetails, usePodCreationFailure, usePodCreationSuccess } from "~/lib/zustand/podSlice";
+import { useIsCreatingPod, usePodActions, usePodCreationDetails } from "~/lib/zustand/podSlice";
 import { PodDetailsTrigger } from "~/components/podDetails/podTrigger";
 import { domain } from "~/constants";
 
@@ -29,8 +29,6 @@ const RepoPage = () => {
   const repos = useRepos();
   const token = useAccessToken();
   const { setPodDetails, createPod, startLoading, stopLoading } = usePodActions();
-  const podCreationSuccess = usePodCreationSuccess()
-  const podCreationFailure = usePodCreationFailure()
   const podCreationDetails = usePodCreationDetails()
   const loading = useIsCreatingPod()
 
@@ -58,17 +56,6 @@ const RepoPage = () => {
     }
   });
 
-  useEffect(() => {
-    if (podCreationFailure) {
-      toast.error("POD Creation Failed, try again");
-    }
-  }, [podCreationFailure])
-
-  useEffect(() => {
-    if (podCreationSuccess) {
-      toast.success("POD Created Successfully");
-    }
-  }, [podCreationSuccess])
 
   function handleSignMessage() {
     signMessage();
@@ -100,7 +87,12 @@ const RepoPage = () => {
     };
 
     setPodDetails(podData);
-    await createPod();
+    const res = await createPod();
+    if (res?.created) {
+      toast.success('POD created successfully')
+    } else {
+      toast.error('Error creating POD')
+    }
   }
 
   function showPodDetails() {
@@ -222,9 +214,9 @@ const RepoPage = () => {
                   Uploading...
                 </span>
               ) : (
-                <span className="flex w-max items-center justify-center gap-2 rounded-full bg-green-100 p-2 py-1 text-sm font-medium text-green-500">
+                <span className="flex -mt-4 w-max items-center justify-center gap-2 rounded-full bg-green-100 p-2 py-1 text-sm font-medium text-green-500">
                   <Check />
-                  Image Uploaded to IPFS
+                  Image Uploaded.
                 </span>
               )
             ) : null}
