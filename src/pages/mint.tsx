@@ -1,4 +1,4 @@
-import { ConnectKitButton, useChains } from "connectkit"
+import { useChains } from "connectkit"
 import { useEffect, useState } from "react"
 import Layout from "~/components/layouts"
 import { redirectMintURL } from "~/constants"
