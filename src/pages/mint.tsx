@@ -8,6 +8,7 @@ import { useMintActions, useMintCode, useMintEligibility, useMintLoading, useMin
 import * as Form from "@radix-ui/react-form";
 import { Spinner } from "~/components/spinner"
 import toast from "react-hot-toast"
+import { User } from 'react-feather'
 
 
 
@@ -20,11 +21,6 @@ const MintPage = () => {
   const { setProjectHash, setCode, setWalletAddress, checkMintEligibility } = useMintActions()
   const [mintState, setMintState] = useState('Check eligibility')
   const chains = useChains()
-  const projectHash = useProjectHash()
-  console.log({
-    projectHash,
-    redirectMintURL
-  })
 
   useEffect(() => {
     const pHash = router.query.pHash
@@ -87,7 +83,7 @@ const MintPage = () => {
           </a>
             :
             <div className="font-supreme">
-              <p className="font-medum text-lg rounded-3xl border border-gray-50 hover:border-gray-100 transition-colors">Logged In</p>
+              <p className="font-medum bg-blue-500 flex gap-2 font-medium items-center justify-center  text-lg rounded-lg text-white px-2 transition-colors"><User size="14px" /> Logged In</p>
             </div>
           }
         </div>
