@@ -1,3 +1,4 @@
+import { useChains } from "connectkit";
 import Link from "next/link";
 import { useRouter } from "next/router";
 interface LayoutProps {
@@ -5,6 +6,7 @@ interface LayoutProps {
 }
 
 function Layout({ children }: LayoutProps) {
+  const chains = useChains()
   const router = useRouter()
   const showNavInfo = router.asPath === '/' || router.asPath === '/about' || router.asPath === '/how-it-works' || router.asPath === '/create' || router.asPath === '/how-it-works'
   return (
@@ -36,6 +38,16 @@ function Layout({ children }: LayoutProps) {
         </ul> : null}
         {
           router.route === '/mint' ? <a className="text-sm underline text-blue-500 font-medium" target="_blank" rel="noopener noreferrer" href="https://chainlist.org/?search=fil&testnets=true">Add Filecoin testnet to metamask</a> : null
+        }
+        {
+          router.route === '/home' ? chains.map(chain => (
+            <span key={chain.id}>
+              <span className="opacity-50 text-base">
+                Supported network:{' '}
+              </span>
+              <span className="bg-blue-100 text-base inset-2 rounded-lg px-2 py-2 font-bold text-blue-600">{chain.name}</span>
+            </span>))
+            : null
         }
       </nav>
       <main>
