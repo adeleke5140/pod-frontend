@@ -46,7 +46,9 @@ const RepoPage = () => {
 
   //singning messsage
   const { data, isError, isLoading, isSuccess, signMessage } = useSignMessage({
-    message: "Sign this message to verify your identity",
+    message: `I want to allow contributors to mint NFTs for my project:${
+      name as string
+    }`,
   });
 
   function navigateToAll() {
