@@ -60,10 +60,10 @@ const HomeStuff = ({ isLoggedIn }: HomeStuffPropsType) => {
   }, [token, fetchRepos]);
 
   const clearCode = () => {
+    void router.push("/");
     logout();
     useAuthStore.persist.clearStorage();
     void router.replace("/home", undefined, { shallow: true });
-    void router.push("/");
   };
 
   return (
