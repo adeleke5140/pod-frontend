@@ -1,9 +1,6 @@
-import { type NextPage } from "next";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
 import { UserCheck } from "react-feather";
-import Layout from "~/components/layouts";
 import { Repos } from "~/components/repos";
 import {
   useAccessToken,
@@ -24,7 +21,8 @@ const HomeStuff = ({ isLoggedIn }: HomeStuffPropsType) => {
   const code = useCode();
   const token = useAccessToken();
   const { setCode, fetchAccessToken, fetchRepos, logout } = useAuthActions();
-  console.log("token", token);
+
+
   useEffect(() => {
     let isMounted = true;
     const URLcode = router.query.code;
@@ -71,8 +69,8 @@ const HomeStuff = ({ isLoggedIn }: HomeStuffPropsType) => {
   return (
     <>
       <div className="mt-16 flex flex-col gap-8 text-left">
-        <h1 className="font-bespoke text-7xl font-bold">
-          {isLoggedIn ? "Welome to POD!" : "Authorize for full Access"}
+        <h1 className="font-bespoke text-6xl font-bold">
+          {isLoggedIn ? "Welome." : "Authorize for full Access"}
         </h1>
         <div className="flex gap-4 md:absolute md:right-0">
           {isLoggedIn ? (
