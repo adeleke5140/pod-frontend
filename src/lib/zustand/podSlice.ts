@@ -25,7 +25,7 @@ interface PodState {
     startLoading: () => void;
     stopLoading: () => void;
     setPodDetails: (podDetails: PodState["podDetails"]) => void;
-    createPod: () => Promise<{ created: boolean } | undefined>;
+    createPod: () => Promise<{ created: "success", message: string } | { created: 'failed', message: string } | undefined>;
   };
 }
 
@@ -61,6 +61,7 @@ export const usePodSlice = create<PodState>()(
           }
           try {
             console.log("creating pod🚀");
+            console.log(podDetails);
             const { data } = await axios.post<PodCreationServerResponse>(
               requestProjectApprovalURL,
               {
@@ -90,16 +91,14 @@ export const usePodSlice = create<PodState>()(
               }))
               console.log("pod created🎉");
               console.log(data);
+              return { created: 'success', message: data.message }
             } else {
               stopLoading()
               console.log("pod creation failed👎");
               console.log(data);
-              throw new Error("pod creation failed");
+              return { created: 'failed' }
             }
 
-            if (typeof data.success != 'undefined') {
-              return { created: data.success }
-            }
           } catch (err) {
             stopLoading()
             console.error("Cannot create POD", err);
