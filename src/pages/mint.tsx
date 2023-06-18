@@ -99,7 +99,7 @@ const MintPage = () => {
           }
         </div>
         <div className="mt-6">
-          {true ?
+          {code ?
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             <Form.Root className="flex flex-col gap-4" onSubmit={handleMint}>
               <Form.Field name="wallet-address">
