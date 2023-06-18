@@ -10,8 +10,6 @@ import { Spinner } from "~/components/spinner"
 import toast from "react-hot-toast"
 import { User } from 'react-feather'
 
-
-
 const MintPage = () => {
   const router = useRouter()
   const code = useMintCode()
