@@ -79,6 +79,12 @@ export const useAuthStore = create<AuthState>()(
               {
                 code,
               },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Accept: "application/json",
+                }
+              }
             );
             console.log({
               data,
