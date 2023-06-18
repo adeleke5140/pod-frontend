@@ -9,6 +9,8 @@ import * as Form from "@radix-ui/react-form";
 import { Spinner } from "~/components/spinner"
 import toast from "react-hot-toast"
 import { User } from 'react-feather'
+import { viemClient } from "~/lib/viem/client"
+import { normalize } from "viem/ens"
 
 const MintPage = () => {
   const router = useRouter()
@@ -19,6 +21,7 @@ const MintPage = () => {
   const { setProjectHash, setCode, setWalletAddress, checkMintEligibility } = useMintActions()
   const [mintState, setMintState] = useState('Check eligibility')
   const chains = useChains()
+
 
   useEffect(() => {
     const pHash = router.query.pHash
@@ -49,7 +52,10 @@ const MintPage = () => {
 
 
     if (data['wallet-address'].includes('.eth')) {
-      toast.error('Ens name not supported yet')
+      const address = await viemClient.getEnsAddress({
+        name: normalize(data['wallet-address']),
+      })
+      setWalletAddress(address as string)
     } else {
       setWalletAddress(data['wallet-address'])
     }
@@ -93,7 +99,7 @@ const MintPage = () => {
           }
         </div>
         <div className="mt-6">
-          {code ?
+          {true ?
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             <Form.Root className="flex flex-col gap-4" onSubmit={handleMint}>
               <Form.Field name="wallet-address">
