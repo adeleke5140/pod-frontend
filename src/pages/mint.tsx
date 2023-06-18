@@ -138,8 +138,7 @@ const MintPage = () => {
         </div>
         {transactionHash ?
           <div className="text-left mt-4 bg-gray-100 inset-2 rounded-lg px-4 py-2">
-            <h3 className="text-sm text-blue-500 font-medium">Check out on block explorer</h3>
-            <p className="font-supreme text-base overflow-auto">Transaction Hash: {transactionHash}</p>
+            <h3 className="text-sm text-blue-500 font-medium"><a href={`https://calibration.filfox.info/en/message/${transactionHash}`} target="_blank" rel="noopener noreferrer"> Check out on filecoin block explorer</a></h3>
           </div>
           : null}
       </div>
