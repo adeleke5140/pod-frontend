@@ -93,11 +93,11 @@ function Layout({ children }: LayoutProps) {
         <span>EthGlobal | HackFS 2023</span>
         <span>
           backend and contract by{" "}
-          <a href="" className="text-blue-600">
+          <a href="https://github.com/heypran" className="text-blue-600">
             lovelace
           </a>
           , frontend by{" "}
-          <a href="" className="text-blue-600">
+          <a href="https://github.com/adeleke5140" className="text-blue-600">
             kenny
           </a>
         </span>
