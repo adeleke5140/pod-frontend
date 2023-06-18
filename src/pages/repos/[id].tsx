@@ -15,7 +15,7 @@ import {
   usePodCreationDetails,
 } from "~/lib/zustand/podSlice";
 import { PodDetailsTrigger } from "~/components/podDetails/podTrigger";
-import { domain } from "~/constants";
+import { mintDomain } from "~/constants";
 
 interface Data {
   "contributions-required": string;
@@ -106,7 +106,7 @@ const RepoPage = () => {
   }, [createPod, setPodDetails, signedMessage, startLoading])
 
   const showPodDetails = useCallback(() => {
-    const link = `${domain}/mint?pHash=${podCreationDetails.pHash}`;
+    const link = `${mintDomain}/mint?pHash=${podCreationDetails.pHash}`;
     PodDetailsTrigger.show({
       link: link,
       tHash: podCreationDetails.tHash,
