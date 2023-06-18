@@ -96,7 +96,7 @@ export const usePodSlice = create<PodState>()(
               stopLoading()
               console.log("pod creation failed👎");
               console.log(data);
-              return { created: 'failed' }
+              return { created: 'failed', message: data.message }
             }
 
           } catch (err) {
@@ -108,7 +108,7 @@ export const usePodSlice = create<PodState>()(
     }), {
     name: "pod-storage",
     storage: middleware.createJSONStorage(() => localStorage),
-    partialize: (state) => ({ projectHash: state.podCreationDetails.pHash })
+    partialize: (state) => ({ podCreatioinDetails: state.podCreationDetails })
   }));
 
 export const usePodActions = () => usePodSlice((state) => state.actions);
