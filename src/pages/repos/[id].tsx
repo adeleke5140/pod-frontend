@@ -1,7 +1,7 @@
 import * as Form from "@radix-ui/react-form";
 import { ConnectKitButton } from "connectkit";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ArrowRight, Check } from "react-feather";
 import { toast } from "react-hot-toast";
 import { useSignMessage } from "wagmi";
@@ -46,9 +46,8 @@ const RepoPage = () => {
 
   //singning messsage
   const { data, isError, isLoading, isSuccess, signMessage } = useSignMessage({
-    message: `I want to allow contributors to mint NFTs for my project:${
-      name as string
-    }`,
+    message: `I want to allow contributors to mint NFTs for my project:${name as string
+      }`,
   });
 
   function navigateToAll() {
@@ -73,7 +72,7 @@ const RepoPage = () => {
     isSuccess && setSignedMessage(data);
   }, [isError, isSuccess, data]);
 
-  async function handleCreatePOD(e: React.FormEvent<HTMLFormElement>) {
+  const handleCreatePOD = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const data = Object.fromEntries(
@@ -95,21 +94,24 @@ const RepoPage = () => {
 
     setPodDetails(podData);
     const res = await createPod();
-    if (res?.created) {
-      toast.success("POD created successfully");
+    console.log({
+      created: res?.created,
+    })
+    if (res?.created === 'success') {
       setPodCreationSuccess(true);
-    } else {
-      toast.error("Error creating POD");
+      toast.success(res.message);
+    } else if (res?.created === 'failed') {
+      toast.error(res.message);
     }
-  }
+  }, [createPod, setPodDetails, signedMessage, startLoading])
 
-  function showPodDetails() {
+  const showPodDetails = useCallback(() => {
     const link = `${domain}/mint?pHash=${podCreationDetails.pHash}`;
     PodDetailsTrigger.show({
       link: link,
       tHash: podCreationDetails.tHash,
     });
-  }
+  }, [podCreationDetails.pHash, podCreationDetails.tHash])
   return (
     <Layout>
       <div className="mx-auto flex max-w-xl flex-col gap-8 pb-8 text-left">
@@ -243,6 +245,7 @@ const RepoPage = () => {
 
             {podCreationSuccess ? (
               <button
+                type="button"
                 onClick={showPodDetails}
                 className="group flex cursor-pointer items-center justify-center gap-2 self-end rounded-3xl bg-blue-600 px-5 py-3 text-xl font-semibold text-white transition-colors ease-out hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50"
               >
