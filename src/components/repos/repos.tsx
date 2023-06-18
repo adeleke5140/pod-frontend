@@ -124,7 +124,7 @@ export const Repos = () => {
                     }
                     className="flex items-center gap-2 self-end rounded-lg bg-blue-100 px-2 py-1 font-medium text-blue-600"
                   >
-                    <Copy size="14px" />
+                    {copiedRepo !== repo.projectHash ? <Copy size="14px" /> : null}
                     {copiedRepo === repo.projectHash ? "Copied!" : "Copy Mint Url"}
                   </button>
                 </div>
