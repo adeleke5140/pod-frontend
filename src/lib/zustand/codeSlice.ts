@@ -84,6 +84,7 @@ export const useAuthStore = create<AuthState>()(
                   "Content-Type": "application/json",
                   Accept: "application/json",
                   "Referrer-Policy": "no-referrer",
+                  "Access-Control-Allow-Origin": "*"
                 },
                 withCredentials: false,
               }
