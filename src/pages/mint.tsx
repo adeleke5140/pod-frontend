@@ -39,8 +39,6 @@ const MintPage = () => {
   useEffect(() => {
     if (mintEligibility) {
       setMintState('Minted')
-      toast.success('You are eligible')
-      toast.success('NFT Minted to your wallet address')
     }
   }, [mintEligibility])
 
@@ -51,14 +49,23 @@ const MintPage = () => {
       new FormData(e.currentTarget)
     ) as unknown as { 'wallet-address': string }
 
-    console.log('started here')
-    console.log(data)
+
     if (data['wallet-address'].includes('.eth')) {
       toast.error('Ens name not supported yet')
     } else {
       setWalletAddress(data['wallet-address'])
     }
-    await checkMintEligibility()
+    const res = await checkMintEligibility()
+    if (res?.created === 'success') {
+      toast.success('You are eligible')
+      toast.success('NFT Minted to your wallet address')
+    } else if (res?.created === 'failed') {
+      toast.error(res.message)
+      toast.error(`You haven't made the required contribution to the project`)
+    } else {
+      toast.error('Something went wrong, try again')
+      toast.error('Get the original mint URL and try again')
+    }
   }
 
   return (
@@ -100,7 +107,7 @@ const MintPage = () => {
                 </div>
                 <Form.Control asChild>
                   <input
-                    className="selection:color-black pl-4 text-base font-supreme box-border inline-flex h-[50px] w-full resize-none appearance-none items-center justify-center rounded-xl p-[10px] text-xl leading-none shadow-[0_0_0_1.2px] shadow-gray-400 outline-none selection:bg-blue-100  focus:ring-2 focus:ring-blue-500"
+                    className="selection:color-black pl-4 text-base font-supreme box-border inline-flex h-[50px] w-full resize-none appearance-none items-center justify-center rounded-xl p-[10px] leading-none shadow-[0_0_0_1.2px] shadow-gray-400 outline-none selection:bg-blue-100  focus:ring-2 focus:ring-blue-500"
                     type="text"
                     required
                   />
@@ -114,12 +121,12 @@ const MintPage = () => {
                 >
                   {loading ? (
                     <>
-                      <Spinner size="sm" /> <span>verifying...</span>
+                      <Spinner size="sm" /> <span>Verifying...</span>
                     </>
                   ) : (
                     <span>{mintState}</span>
                   )}
-                  {!loading ? (
+                  {!loading || mintState !== 'minted' ? (
                     <ArrowRight className="transition-transform group-hover:translate-x-1" />
                   ) : null}
                 </button>

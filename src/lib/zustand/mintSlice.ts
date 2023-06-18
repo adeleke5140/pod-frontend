@@ -16,7 +16,7 @@ interface MintState {
     setProjectHash: (pHash: string) => void;
     setCode: (code: string) => void;
     setWalletAddress: (walletAddress: string) => void;
-    checkMintEligibility: () => Promise<void>;
+    checkMintEligibility: () => Promise<{ created: 'failed' | 'success', message: string } | undefined>;
   }
 }
 
@@ -26,6 +26,7 @@ interface MintEligibilityServerResponse {
     isAllowedToMint: boolean;
     transactionHash: string;
   }
+  message: string;
 }
 
 export const useMintSlice = create<MintState>()(
@@ -48,21 +49,29 @@ export const useMintSlice = create<MintState>()(
           const stopLoading = get().actions.stopLoading;
           startLoading()
           const { pHash, code, walletAddress } = get();
+          console.log({
+            pHash,
+            code,
+            walletAddress
+          })
           try {
             const { data } = await axios.post<MintEligibilityServerResponse>(checkMintEligibilityURL, {
               projectHash: pHash,
               code,
               account: walletAddress
             })
+            console.log(data)
             if (data.success) {
               stopLoading()
               set((state) => ({ ...state, mintEligibility: data.data.isAllowedToMint }))
               set((state) => ({ ...state, transactionHash: data.data.transactionHash }))
               set((state) => ({ ...state, pHash: "" }))
               console.log('Allowed to mint', "✅")
+              return { created: "success", message: data.message }
             } else {
               stopLoading()
               console.log('Not allowed to mint', "❌")
+              return { created: "failed", message: data.message }
             }
           } catch (err) {
             stopLoading()
