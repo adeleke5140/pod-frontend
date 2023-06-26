@@ -19,3 +19,6 @@ The project is built with:
 * NextJS
 * TailwindCSSS
 * ENS Design system
+
+### Current issues
+* Deployment to production seem to be failing at the moment and we are working on it as soon as we can. We look forward to your trying out and using Pod.
