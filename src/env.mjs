@@ -4,12 +4,12 @@ import { z } from "zod";
 export const env = createEnv({
   server: {},
   client: {
-    NEXT_PUBLIC_CLIENT_ID: z.string(),
+    NEXT_PUBLIC_CLIENT_ID: z.string().min(1),
     NEXT_PUBLIC_CLIENT_ID_MINT: z.string(),
     NEXT_PUBLIC_CLIENT_REDIRECT_URI: z.string().url(),
     NEXT_PUBLIC_REDIRECT_MINT_URI: z.string().url(),
-    NEXT_PUBLIC_WEB3STORAGE_TOKEN: z.string(),
-    NEXT_PUBLIC_WALLET_CONNECT_ID: z.string(),
+    NEXT_PUBLIC_WEB3STORAGE_TOKEN: z.string().min(1),
+    NEXT_PUBLIC_WALLET_CONNECT_ID: z.string().min(1),
     NEXT_PUBLIC_DOMAIN: z.string().url(),
     NEXT_PUBLIC_API_URL: z.string().url(),
   },
